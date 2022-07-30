@@ -129,7 +129,7 @@ void draw_triangle_gouraud(short tri[], u_char colors[]) {
     nextpri += sizeof(POLY_G3);
 }
 
-void draw_4lines_gouraud(ColorVertex v[]) {
+void draw_3lines_gouraud(ColorVertex v[]) {
     LINE_G4 *line = (LINE_G4*)nextpri;
     setLineG4(line);
     setRGB0(line, v->r, v->g, v->b);
