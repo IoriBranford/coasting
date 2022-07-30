@@ -5,7 +5,7 @@ cleansub:
 	$(MAKE) clean
 	rm -f coasting.iso
 
-TARGET = coasting
+TARGET = game
 TYPE = ps-exe
 
 SRCS = 	src/main.c \

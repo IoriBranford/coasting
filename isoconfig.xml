@@ -85,7 +85,7 @@
             -->
             <!-- Stores system.txt as system.cnf -->
             <file name="system.cnf" type="data" source="system.cnf"/>
-            <file name="SCES_313.37"   type="data" source="coasting.ps-exe"/>
+            <file name="SCES_313.37"   type="data" source="game.ps-exe"/>
             <dummy sectors="1024"/>
             
             <!-- <dir>
