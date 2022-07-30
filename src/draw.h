@@ -17,6 +17,9 @@ void draw_rect(short x, short y, short w, short h);
 void draw_sprite(short x, short y, short w, short h, TIM_IMAGE *image, u_char u, u_char v);
 void set_draw_sprite_page(TIM_IMAGE *image);
 
+void draw_triangle_flat(short tri[]);
+void draw_triangle_gouraud(short tri[], u_char colors[]);
+
 void draw_end();
 
 #endif

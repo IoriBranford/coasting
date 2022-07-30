@@ -87,6 +87,26 @@ void set_draw_sprite_page(TIM_IMAGE *image) {
     nextpri += sizeof(DR_TPAGE);
 }
 
+void draw_triangle_flat(short tri[]) {
+    POLY_F3 *poly = (POLY_F3*)nextpri;
+    setPolyF3(poly);
+    setRGB0(poly, drawcolor[0], drawcolor[1], drawcolor[2]);
+    setXY3(poly, tri[0], tri[1], tri[2], tri[3], tri[4], tri[5]);
+    addPrim(ot[db], poly);
+    nextpri += sizeof(POLY_F3);
+}
+
+void draw_triangle_gouraud(short tri[], u_char colors[]) {
+    POLY_G3 *poly = (POLY_G3*)nextpri;
+    setPolyG3(poly);
+    setRGB0(poly, colors[0], colors[1], colors[2]);
+    setRGB1(poly, colors[3], colors[4], colors[5]);
+    setRGB2(poly, colors[6], colors[7], colors[8]);
+    setXY3(poly, tri[0], tri[1], tri[2], tri[3], tri[4], tri[5]);
+    addPrim(ot[db], poly);
+    nextpri += sizeof(POLY_G3);
+}
+
 void draw_end() {
     DrawSync(0);                // Wait for any draw processing to finish
     
