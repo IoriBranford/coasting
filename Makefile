@@ -4,6 +4,7 @@ TYPE = ps-exe
 SRCS = 	src/main.c \
 		src/draw.c \
 		src/image.c \
+		src/input.c \
 ../third_party/common/syscalls/printf.s \
 ../third_party/common/crt0/crt0.s \
 
