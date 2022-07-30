@@ -64,6 +64,28 @@ void draw_rect(short x, short y, short w, short h) {
     nextpri += sizeof(TILE);    // Advance the next primitive pointer
 }
 
+void draw_square16(ColorVertex *v) {
+    TILE_16 *tile = (TILE_16*)nextpri;      // Cast next primitive
+
+    setTile16(tile);              // Initialize the primitive (very important)
+    setXY0(tile, v->x, v->y);       // Set primitive (x,y) position
+    setRGB0(tile, v->r, v->g, v->b); 
+    addPrim(ot[db], tile);      // Add primitive to the ordering table
+    
+    nextpri += sizeof(TILE_16);    // Advance the next primitive pointer
+}
+
+void draw_square8(ColorVertex *v) {
+    TILE_8 *tile = (TILE_8*)nextpri;      // Cast next primitive
+
+    setTile8(tile);              // Initialize the primitive (very important)
+    setXY0(tile, v->x, v->y);       // Set primitive (x,y) position
+    setRGB0(tile, v->r, v->g, v->b); 
+    addPrim(ot[db], tile);      // Add primitive to the ordering table
+    
+    nextpri += sizeof(TILE_8);    // Advance the next primitive pointer
+}
+
 void draw_sprite(short x, short y, short w, short h, TIM_IMAGE *image, u_char u, u_char v) {
     SPRT *sprt = (SPRT *)nextpri;
     setSprt(sprt);
@@ -105,6 +127,18 @@ void draw_triangle_gouraud(short tri[], u_char colors[]) {
     setXY3(poly, tri[0], tri[1], tri[2], tri[3], tri[4], tri[5]);
     addPrim(ot[db], poly);
     nextpri += sizeof(POLY_G3);
+}
+
+void draw_4lines_gouraud(ColorVertex v[]) {
+    LINE_G4 *line = (LINE_G4*)nextpri;
+    setLineG4(line);
+    setRGB0(line, v->r, v->g, v->b);
+    setRGB1(line, v[1].r, v[1].g, v[1].b);
+    setRGB2(line, v[2].r, v[2].g, v[2].b);
+    setRGB3(line, v[3].r, v[3].g, v[3].b);
+    setXY4(line, v->x, v->y, v[1].x, v[1].y, v[2].x, v[2].y, v[3].x, v[3].y);
+    addPrim(ot[db], line);
+    nextpri += sizeof(LINE_G4);
 }
 
 void draw_end() {
