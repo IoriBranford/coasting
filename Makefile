@@ -1,3 +1,10 @@
+.PHONY: all cleansub
+all:
+	mkpsxiso -y ./isoconfig.xml
+cleansub:
+	$(MAKE) clean
+	rm -f coasting.iso
+
 TARGET = coasting
 TYPE = ps-exe
 
