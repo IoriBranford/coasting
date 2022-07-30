@@ -5,7 +5,7 @@ typedef enum IMGID {
     NUM_IMGS
 } IMGID;
 
-#include <sys/types.h>	// This provides typedefs needed by libgte.h and libgpu.h
+#include <types.h>	// This provides typedefs needed by libgte.h and libgpu.h
 #include <libgte.h>	// GTE header, not really used but libgpu.h depends on it
 #include <libgpu.h>	// GPU library header
 
