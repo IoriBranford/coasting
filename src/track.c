@@ -39,11 +39,23 @@ Track TRACKS[] = {
     {16, 0},
     {16, 0},
 };
+int NUM_TRACKS = sizeof(TRACKS)/sizeof(Track);
 
 u_char COLORCYCLE[] = {
     255, 0, 255,
     0, 255, 255,
 };
+
+void track_setup() {
+    Track *tr = TRACKS;
+    int f_x = 0, f_y = 0;
+    for (int i = 0; i < NUM_TRACKS; ++i) {
+        tr->f_x0 = f_x;
+        tr->f_y0 = f_y;
+        f_x += tr->dx * ONE;
+        f_y += tr->dy * ONE;
+    }
+}
 
 Track* get_track(int i) {
     return &TRACKS[i];
@@ -52,12 +64,11 @@ Track* get_track(int i) {
 void draw_tracks(short offsetx, short offsety) {
     int cn = sizeof(COLORCYCLE);
     int ci = ((get_time() / 6) * 3) % cn;
-    int n = sizeof(TRACKS)/sizeof(Track);
     Track *tr = TRACKS;
     short x = offsetx, y = offsety;
     ColorVertex vertices[4];
     vertices[0].b = vertices[1].b = vertices[2].b = vertices[3].b = 255;
-    for (int i = 0; i < n; i += 4) {
+    for (int i = 0; i < NUM_TRACKS; i += 4) {
         vertices->x = x;
         vertices->y = y;
         vertices->r = COLORCYCLE[ci];
