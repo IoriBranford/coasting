@@ -51,7 +51,7 @@ u_char COLORCYCLE[] = {
 
 void draw_ground() {
     int cn = sizeof(COLORCYCLE);
-    int ci = (get_time() / 4 * 3) % cn;
+    int ci = ((get_time() / 6) * 3) % cn;
     int n = sizeof(GROUND)/sizeof(Ground);
     Ground *g = GROUND;
     short x = 0, y = 0;
