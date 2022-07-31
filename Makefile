@@ -3,7 +3,7 @@ all:
 	mkpsxiso -y ./isoconfig.xml
 cleansub:
 	$(MAKE) clean
-	rm -f coasting.iso
+	rm -f *.iso *.bin *.cue
 
 TARGET = game
 TYPE = ps-exe
