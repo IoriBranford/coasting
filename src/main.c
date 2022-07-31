@@ -2,6 +2,7 @@
 #include "image.h"
 #include "input.h"
 #include "track.h"
+#include "car.h"
 #include "time.h"
 #include "audio.h"
 
@@ -30,12 +31,14 @@ int main() {
 		if (is_button_pressed(controller, BUTTON_LEFT))
 			camerax++;
 
-		draw_begin();
+		update_car();
 
-		triangle[0] = x; 		triangle[1] = y;
-		triangle[2] = x; 		triangle[3] = y-16;
-		triangle[4] = x+16; 	triangle[5] = y-8;
-		draw_triangle_gouraud(triangle, colors);
+		draw_begin();
+		draw_car(camerax, cameray);
+		// triangle[0] = x; 		triangle[1] = y;
+		// triangle[2] = x; 		triangle[3] = y-16;
+		// triangle[4] = x+16; 	triangle[5] = y-8;
+		// draw_triangle_gouraud(triangle, colors);
 
 		draw_tracks(camerax, cameray);
 		// for (int i = 16; i <= 160; i += 16) {

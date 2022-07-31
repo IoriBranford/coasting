@@ -13,8 +13,9 @@ SRCS = 	src/main.c \
 		src/image.c \
 		src/input.c \
 		src/time.c \
-		src/track.c \
 		src/audio.c \
+		src/track.c \
+		src/car.c \
 ../third_party/common/syscalls/printf.s \
 ../third_party/common/crt0/crt0.s \
 
