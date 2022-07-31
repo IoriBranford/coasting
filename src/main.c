@@ -2,6 +2,7 @@
 #include "image.h"
 #include "input.h"
 #include "ground.h"
+#include "time.h"
 
 int main() {
 	short x = 0, y = 0;
@@ -46,6 +47,7 @@ int main() {
 		// 	// draw_rect(i, i, 64, 64);
 		// }
 		draw_end();
+		time_tick();
 	}
 	return 0;
 }
