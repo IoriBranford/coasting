@@ -62,9 +62,8 @@
             Attributes:
                 file    - Specifies the license file to inject into the ISO image.
         -->
-        <!--
-        <license file="LICENSEA.DAT"/>
-        -->
+        
+        <license file="../third_party/psyq/cdgen/LCNSFILE/LICENSEA.DAT"/>
         
         <!-- <directory_tree>
                 Specifies and contains the directory structure for the data track.
