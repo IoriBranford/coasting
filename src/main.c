@@ -23,6 +23,9 @@ int main() {
 	input_setup();
 	controller = get_controller(0);
 
+	track_setup();
+	car_setup();
+
 	play_cdda(2, 1);
 
 	while (1) {
