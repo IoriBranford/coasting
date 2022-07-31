@@ -4,6 +4,9 @@
 struct Track {
     short dx, dy;
     int f_x0, f_y0;
+    short f_dirx, f_diry;
+    int f_len;
+    int f_prevlen; // length of all prev tracks
 };
 
 typedef struct Track Track;
