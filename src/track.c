@@ -1,13 +1,13 @@
-#include "ground.h"
+#include "track.h"
 
 #include "draw.h"
 #include "time.h"
 
-typedef struct Ground {
+typedef struct Track {
     short dx, dy;
-} Ground;
+} Track;
 
-Ground GROUND[] = {
+Track TRACK[] = {
     {16, 0},
     {16, 0},
     {16, 0},
@@ -49,11 +49,11 @@ u_char COLORCYCLE[] = {
     0, 255, 255,
 };
 
-void draw_ground() {
+void draw_track() {
     int cn = sizeof(COLORCYCLE);
     int ci = ((get_time() / 6) * 3) % cn;
-    int n = sizeof(GROUND)/sizeof(Ground);
-    Ground *g = GROUND;
+    int n = sizeof(TRACK)/sizeof(Track);
+    Track *tr = TRACK;
     short x = 0, y = 0;
     ColorVertex vertices[4];
     vertices[0].b = vertices[1].b = vertices[2].b = vertices[3].b = 255;
@@ -64,8 +64,8 @@ void draw_ground() {
         vertices->g = COLORCYCLE[ci+1];
         vertices->b = COLORCYCLE[ci+2];
         for (int j = 1; j < 4; ++j) {
-            x += g[i+j].dx;
-            y += g[i+j].dy;
+            x += tr[i+j].dx;
+            y += tr[i+j].dy;
             ci = (ci + 3) % cn;
             vertices[j].x = x;
             vertices[j].y = y;

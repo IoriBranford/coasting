@@ -1,7 +1,7 @@
 #include "draw.h"
 #include "image.h"
 #include "input.h"
-#include "ground.h"
+#include "track.h"
 #include "time.h"
 
 int main() {
@@ -32,7 +32,7 @@ int main() {
 		triangle[4] = x; triangle[5] = y+16;
 		draw_triangle_gouraud(triangle, colors);
 
-		draw_ground();
+		draw_track();
 		// for (int i = 16; i <= 160; i += 16) {
 		// 	triangle[0] = i; 	triangle[1] = i;
 		// 	triangle[2] = i+64; triangle[3] = i;
