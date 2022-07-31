@@ -1,9 +1,13 @@
 .PHONY: all cleansub
 all:
+	mkdir -p iso
 	mkpsxiso -y ./isoconfig.xml
 cleansub:
 	$(MAKE) clean
-	rm -f *.iso *.bin *.cue
+	rm -rf iso/
+
+publish: iso/NeonCoaster.bin iso/NeonCoaster.cue
+	butler push iso ioribranford/neon-coaster:psx-ntsc-uc --userversion ${VERSION}
 
 TARGET = game
 TYPE = ps-exe

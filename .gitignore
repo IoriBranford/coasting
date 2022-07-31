@@ -3,6 +3,7 @@
 *.o
 *.elf
 *.ps-exe
+iso/
 *.iso
 *.cso
 *.bin
