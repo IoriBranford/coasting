@@ -7,10 +7,14 @@
 // SPU library
 #include <libspu.h>
 
+#define CDMODE_PLAY         1
+#define CDMODE_PLAY_LOOP    2
+
 SpuCommonAttr spuSettings;
 
 CdlLOC loc[100];
 int ntoc;
+int cdplaylist[] = {0, 0};
 
 void audio_setup() {
     CdInit();
@@ -45,7 +49,8 @@ void audio_setup() {
     CdControlB(CdlSetmode, param, 0); /* set mode */
 }
 
-void play_cdda(int track) {
+void play_cdda(int track, int loop) {
     if (!ntoc) return;
-    CdControlB (CdlPlay, (u_char *)&loc[track], 0);
+    cdplaylist[0] = track;
+    CdPlay(loop ? CDMODE_PLAY_LOOP : CDMODE_PLAY, cdplaylist, 0);
 }
