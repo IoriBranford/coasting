@@ -13,7 +13,7 @@ struct Controller
 };
 
 // pad buffer arrays
-u_char padbuff[NUM_CONTROLLERS][34];
+char padbuff[NUM_CONTROLLERS][34];
 
 void input_setup() {
     // Initialize the pads
