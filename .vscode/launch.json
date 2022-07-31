@@ -9,7 +9,7 @@
             "target": "localhost:3333",
             "remote": true,
             "stopAtConnect": true,
-            "executable": "coasting.elf",
+            "executable": "game.elf",
             "linux": {
                 "gdbpath": "/usr/bin/gdb-multiarch",
             },
@@ -20,7 +20,7 @@
             "autorun": [
                 "set substitute-path /project .",
                 "monitor reset shellhalt",
-                "load ./coasting.elf",
+                "load ./game.elf",
                 "continue",
             ],
             "valuesFormatting": "parseText"
