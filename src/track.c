@@ -50,11 +50,10 @@ u_char COLORCYCLE[] = {
 
 void track_setup() {
     Track *tr = TRACKS;
-    int f_x = 0, f_y = 0, f_prevlen = 0;
+    int f_x = 0, f_y = 0;
     for (int i = 0; i < NUM_TRACKS; ++i) {
         tr->f_x0 = f_x;
         tr->f_y0 = f_y;
-        tr->f_prevlen = f_prevlen;
 
         int f_dx = tr->dx * ONE;
         int f_dy = tr->dy * ONE;
@@ -67,7 +66,6 @@ void track_setup() {
         tr->f_diry = ONE * f_dy / f_len;
         f_x += f_dx;
         f_y += f_dy;
-        f_prevlen += f_len;
 
         tr++;
     }
