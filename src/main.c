@@ -1,6 +1,7 @@
 #include "draw.h"
 #include "image.h"
 #include "input.h"
+#include "ground.h"
 
 int main() {
 	short x = 0, y = 0;
@@ -13,6 +14,7 @@ int main() {
 	Controller *controller;
 
 	draw_setup(0, 320, 240);
+	set_clear_color(32, 0, 32);
 	input_setup();
 	controller = get_controller(0);
 
@@ -29,19 +31,20 @@ int main() {
 		triangle[4] = x; triangle[5] = y+16;
 		draw_triangle_gouraud(triangle, colors);
 
-		for (int i = 16; i <= 160; i += 16) {
-			triangle[0] = i; 	triangle[1] = i;
-			triangle[2] = i+64; triangle[3] = i;
-			triangle[4] = i+32; triangle[5] = i+64;
+		draw_ground();
+		// for (int i = 16; i <= 160; i += 16) {
+		// 	triangle[0] = i; 	triangle[1] = i;
+		// 	triangle[2] = i+64; triangle[3] = i;
+		// 	triangle[4] = i+32; triangle[5] = i+64;
 
-			draw_triangle_gouraud(triangle, colors);
-			triangle[4] = i; 	triangle[5] = i+64;
-			triangle[2] = i+64; triangle[3] = i+64;
-			triangle[0] = i+32; triangle[1] = i;
-			set_draw_color(i, i, 0);
-			draw_triangle_flat(triangle);
-			// draw_rect(i, i, 64, 64);
-		}
+		// 	draw_triangle_gouraud(triangle, colors);
+		// 	triangle[4] = i; 	triangle[5] = i+64;
+		// 	triangle[2] = i+64; triangle[3] = i+64;
+		// 	triangle[0] = i+32; triangle[1] = i;
+		// 	set_draw_color(i, i, 0);
+		// 	draw_triangle_flat(triangle);
+		// 	// draw_rect(i, i, 64, 64);
+		// }
 		draw_end();
 	}
 	return 0;
