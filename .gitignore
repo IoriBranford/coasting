@@ -5,3 +5,5 @@
 *.ps-exe
 *.iso
 *.cso
+*.bin
+*.cue

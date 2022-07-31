@@ -13,7 +13,7 @@
         cue_sheet   - Optional, file name of the cue sheet for the image file
                       (required if more than one track is specified).
 -->
-<iso_project image_name="coasting.iso">
+<iso_project image_name="coasting.bin" cue_sheet="coasting.cue">
 
     <!-- <track>
             Specifies a track to the ISO project. This example element creates a data
@@ -95,5 +95,11 @@
         </directory_tree>
         
     </track>
-    
+
+    <!--
+        "Raving Energy (faster)" Kevin MacLeod (incompetech.com)
+        Licensed under Creative Commons: By Attribution 4.0 License
+        http://creativecommons.org/licenses/by/4.0/
+    -->
+    <track type="audio" source="cdda/Raving Energy faster.mp3"/>
 </iso_project>
