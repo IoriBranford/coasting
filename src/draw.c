@@ -30,6 +30,8 @@ void draw_setup(int region, int w, int h) {
     SetDefDispEnv(&disp[1], 0, h, w, h);
     SetDefDrawEnv(&draw[1], 0, 0, w, h);
 
+    SetDispMask(1);             // Enable the display
+
     draw[0].isbg = 1;               // Enable clear
     draw[1].isbg = 1;
     set_clear_color(128, 128, 128);
@@ -148,8 +150,6 @@ void draw_end() {
 
     PutDispEnv(&disp[db]);      // Apply the DISPENV/DRAWENVs
     PutDrawEnv(&draw[db]);
-
-    SetDispMask(1);             // Enable the display
 
     DrawOTag(ot[db]+OTLEN-1);   // Draw the ordering table
     
