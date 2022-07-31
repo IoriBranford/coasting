@@ -1,6 +1,7 @@
 #include "ground.h"
 
 #include "draw.h"
+#include "time.h"
 
 typedef struct Ground {
     short dx, dy;
@@ -43,7 +44,14 @@ Ground GROUND[] = {
     {16, 0},
 };
 
+u_char COLORCYCLE[] = {
+    255, 0, 255,
+    0, 255, 255,
+};
+
 void draw_ground() {
+    int cn = sizeof(COLORCYCLE);
+    int ci = (get_time() / 4 * 3) % cn;
     int n = sizeof(GROUND)/sizeof(Ground);
     Ground *g = GROUND;
     short x = 0, y = 0;
@@ -52,18 +60,18 @@ void draw_ground() {
     for (int i = 0; i < n; i += 4) {
         vertices->x = x;
         vertices->y = y;
+        vertices->r = COLORCYCLE[ci];
+        vertices->g = COLORCYCLE[ci+1];
+        vertices->b = COLORCYCLE[ci+2];
         for (int j = 1; j < 4; ++j) {
             x += g[i+j].dx;
             y += g[i+j].dy;
+            ci = (ci + 3) % cn;
             vertices[j].x = x;
             vertices[j].y = y;
-        }
-        if ((i/4) % 2){
-            vertices[0].r = vertices[1].g = vertices[2].r = vertices[3].g = 0;
-            vertices[0].g = vertices[1].r = vertices[2].g = vertices[3].r = 255;
-        } else {
-            vertices[0].r = vertices[1].g = vertices[2].r = vertices[3].g = 255;
-            vertices[0].g = vertices[1].r = vertices[2].g = vertices[3].r = 0;
+            vertices[j].r = COLORCYCLE[ci];
+            vertices[j].g = COLORCYCLE[ci+1];
+            vertices[j].b = COLORCYCLE[ci+2];
         }
         draw_3lines_gouraud(vertices);
     }
