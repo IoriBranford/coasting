@@ -54,6 +54,7 @@ void track_setup() {
         tr->f_y0 = f_y;
         f_x += tr->dx * ONE;
         f_y += tr->dy * ONE;
+        tr++;
     }
 }
 
