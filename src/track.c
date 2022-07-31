@@ -49,12 +49,12 @@ Track* get_track(int i) {
     return &TRACKS[i];
 };
 
-void draw_tracks() {
+void draw_tracks(short offsetx, short offsety) {
     int cn = sizeof(COLORCYCLE);
     int ci = ((get_time() / 6) * 3) % cn;
     int n = sizeof(TRACKS)/sizeof(Track);
     Track *tr = TRACKS;
-    short x = 0, y = 0;
+    short x = offsetx, y = offsety;
     ColorVertex vertices[4];
     vertices[0].b = vertices[1].b = vertices[2].b = vertices[3].b = 255;
     for (int i = 0; i < n; i += 4) {

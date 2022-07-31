@@ -8,6 +8,6 @@ struct Track {
 typedef struct Track Track;
 
 Track* get_track(int i);
-void draw_tracks();
+void draw_tracks(short offsetx, short offsety);
 
 #endif
