@@ -13,7 +13,7 @@
         cue_sheet   - Optional, file name of the cue sheet for the image file
                       (required if more than one track is specified).
 -->
-<iso_project image_name="coasting.bin" cue_sheet="coasting.cue">
+<iso_project image_name="NeonCoaster.bin" cue_sheet="NeonCoaster.cue">
 
     <!-- <track>
             Specifies a track to the ISO project. This example element creates a data
@@ -46,8 +46,8 @@
         <identifiers
             system          ="PLAYSTATION"
             application     ="PLAYSTATION"
-            volume          ="COASTING"
-            volume_set      ="COASTING"
+            volume          ="NEONCOASTER"
+            volume_set      ="NEONCOASTER"
             publisher       ="IORIBRANFORD"
             data_preparer       ="MKPSXISO"
         />
