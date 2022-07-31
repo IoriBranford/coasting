@@ -12,7 +12,7 @@ struct Track {
 typedef struct Track Track;
 
 void track_setup();
-Track* get_track(int i);
+void move_on_tracks(int *f_x, int *f_y, int *f_pos, int *tri, int f_speed);
 void draw_tracks(short offsetx, short offsety);
 
 #endif
