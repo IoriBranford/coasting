@@ -21,6 +21,7 @@
                 "set substitute-path /project .",
                 "monitor reset shellhalt",
                 "load ./game.elf",
+                "tbreak main",
                 "continue",
             ],
             "valuesFormatting": "parseText"
