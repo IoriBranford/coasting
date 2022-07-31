@@ -100,7 +100,7 @@ void move_on_tracks(int *f_x, int *f_y, int *f_pos, int *tri, int f_speed) {
         } else {
             int f_distx = f_trx1 - f_newx;
             int f_disty = f_try1 - f_newy;
-            int f_distsq = f_distx * f_distx / ONE + f_disty * f_disty / ONE;
+            int f_distsq = (f_distx / ONE * f_distx) + (f_disty / ONE * f_disty);
             f_len = csqrt(f_distsq);
         }
 
