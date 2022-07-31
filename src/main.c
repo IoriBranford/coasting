@@ -22,7 +22,7 @@ int main() {
 	input_setup();
 	controller = get_controller(0);
 
-	play_cdda(2);
+	play_cdda(2, 1);
 
 	while (1) {
 		if (is_button_pressed(controller, BUTTON_RIGHT))
