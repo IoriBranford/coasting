@@ -12,6 +12,11 @@ int main() {
 
 	draw_setup(0, 320, 240);
 	set_clear_color(32, 0, 32);
+	// Load the internal font texture
+	FntLoad(960, 0);
+	// Create the text stream
+	// FntOpen(8, 8, 304, 224, 0, 100);
+
 	audio_setup();
 	input_setup();
 	controller = get_controller(0);
@@ -32,6 +37,8 @@ int main() {
 		draw_begin();
 		draw_car(camerax, cameray);
 		draw_tracks(camerax, cameray);
+		
+        FntFlush(-1);
 		draw_end();
 		time_tick();
 	}
