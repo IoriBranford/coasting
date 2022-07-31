@@ -1,9 +1,11 @@
 #include "car.h"
-
+#include "track.h"
 #include "draw.h"
 
 struct Car {
     int f_x, f_y;
+    int f_trackpos;
+    int trackidx;
     int f_angle;
 };
 
@@ -13,11 +15,13 @@ Car car;
 
 void car_setup() {
     car.f_x = car.f_y = 0;
+    car.f_trackpos = 0;
+    car.trackidx = 0;
     car.f_angle = 0;
 }
 
 void update_car() {
-    car.f_angle += ONE/16;
+    move_on_tracks(&car.f_x, &car.f_y, &car.f_trackpos, &car.trackidx, ONE*2);
 }
 
 void draw_car(short camerax, short cameray) {
