@@ -1,6 +1,13 @@
 #ifndef __TRACK_H
 #define __TRACK_H
 
-void draw_track();
+struct Track {
+    short dx, dy;
+};
+
+typedef struct Track Track;
+
+Track* get_track(int i);
+void draw_tracks();
 
 #endif

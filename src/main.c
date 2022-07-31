@@ -32,7 +32,7 @@ int main() {
 		triangle[4] = x; triangle[5] = y+16;
 		draw_triangle_gouraud(triangle, colors);
 
-		draw_track();
+		draw_tracks();
 		// for (int i = 16; i <= 160; i += 16) {
 		// 	triangle[0] = i; 	triangle[1] = i;
 		// 	triangle[2] = i+64; triangle[3] = i;

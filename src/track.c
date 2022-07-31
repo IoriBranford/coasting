@@ -3,11 +3,7 @@
 #include "draw.h"
 #include "time.h"
 
-typedef struct Track {
-    short dx, dy;
-} Track;
-
-Track TRACK[] = {
+Track TRACKS[] = {
     {16, 0},
     {16, 0},
     {16, 0},
@@ -49,11 +45,15 @@ u_char COLORCYCLE[] = {
     0, 255, 255,
 };
 
-void draw_track() {
+Track* get_track(int i) {
+    return &TRACKS[i];
+};
+
+void draw_tracks() {
     int cn = sizeof(COLORCYCLE);
     int ci = ((get_time() / 6) * 3) % cn;
-    int n = sizeof(TRACK)/sizeof(Track);
-    Track *tr = TRACK;
+    int n = sizeof(TRACKS)/sizeof(Track);
+    Track *tr = TRACKS;
     short x = 0, y = 0;
     ColorVertex vertices[4];
     vertices[0].b = vertices[1].b = vertices[2].b = vertices[3].b = 255;
