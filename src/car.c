@@ -26,7 +26,7 @@ void update_car() {
 }
 
 void car_set_camera(short *camerax, short *cameray) {
-    *camerax = 60-car.f_x/ONE;
+    *camerax = 160-car.f_x/ONE;
     *cameray = 120-car.f_y/ONE;
 }
 
