@@ -141,7 +141,7 @@ void track_setup() {
         tr->f_angle = ratan2(disty*ONE, distx*ONE);
         tr->f_dirx = ccos(tr->f_angle);
         tr->f_diry = csin(tr->f_angle);
-        int f_len = ONE*ONE*distx / tr->f_dirx;
+        int f_len = ONE*distx / tr->f_dirx*ONE;
         tr->f_len = f_len;
         x += distx;
         y += disty;
