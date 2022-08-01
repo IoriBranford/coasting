@@ -138,12 +138,11 @@ void track_setup() {
         tr->f_start = f_totallen;
         int distx = tr->dx;
         int disty = tr->dy;
-        int distsq = (distx * distx) + (disty * disty);
-        int f_len = csqrt(distsq*ONE);
-        tr->f_len = f_len;
         tr->f_angle = ratan2(disty*ONE, distx*ONE);
         tr->f_dirx = ccos(tr->f_angle);
         tr->f_diry = csin(tr->f_angle);
+        int f_len = ONE*ONE*distx / tr->f_dirx;
+        tr->f_len = f_len;
         x += distx;
         y += disty;
         f_totallen += f_len;
