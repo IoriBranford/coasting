@@ -21,7 +21,7 @@ void car_setup() {
 }
 
 void update_car() {
-    move_on_tracks(&car.f_x, &car.f_y, &car.f_trackpos, &car.trackidx, &car.f_angle, ONE);
+    move_on_tracks(&car.f_x, &car.f_y, &car.f_trackpos, &car.trackidx, &car.f_angle, ONE*2);
 }
 
 void car_set_camera(short *camerax, short *cameray) {
