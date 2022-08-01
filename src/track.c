@@ -126,14 +126,27 @@ u_char COLORCYCLE[] = {
     0, 255, 255,
 };
 
+int f_totallen;
+
 void track_setup() {
     Track *tr = TRACKS;
     int x = 0, y = 0;
+    f_totallen = 0;
     for (int i = 0; i < NUM_TRACKS; ++i) {
         tr->x0 = x;
         tr->y0 = y;
-        x += tr->dx;
-        y += tr->dy;
+        tr->f_start = f_totallen;
+        int distx = tr->dx;
+        int disty = tr->dy;
+        int distsq = (distx * distx) + (disty * disty);
+        int f_len = csqrt(distsq*ONE);
+        tr->f_len = f_len;
+        tr->f_angle = ratan2(disty*ONE, distx*ONE);
+        tr->f_dirx = ccos(tr->f_angle);
+        tr->f_diry = csin(tr->f_angle);
+        x += distx;
+        y += disty;
+        f_totallen += f_len;
         tr++;
     }
 }
@@ -195,6 +208,51 @@ void move_on_tracks(int *f_x, int *f_y, int *f_pos, int *tri, int *f_angle, int 
     *f_y = f_newy;
     *f_pos = f_newpos;
     *tri = newtri;
+}
+
+void move_on_track(int *trackidx, int *f_position, int f_speed) {
+    int tri = *trackidx;
+    int f_pos = *f_position;
+    f_pos += f_speed;
+    while (tri >= 0 && tri < NUM_TRACKS) {
+        Track *tr = &TRACKS[tri];
+        int f_dest = tr->f_start;
+        if (f_speed > 0) {
+            f_dest += tr->f_len;
+            if (f_pos >= f_dest)
+                ++tri;
+            else
+                break;
+        } else {
+            if (f_pos <= f_dest)
+                --tri;
+            else
+                break;
+        }
+    }
+    if (f_pos < 0)
+        f_pos = 0;
+    if (f_pos > f_totallen)
+        f_pos = f_totallen;
+    if (tri < 0)
+        tri = 0;
+    if (tri >= NUM_TRACKS)
+        tri = NUM_TRACKS-1;
+
+    *trackidx = tri;
+    *f_position = f_pos;
+}
+
+void track_set_transform(int *f_x, int *f_y, int *f_angle, int tri, int f_pos) {
+    Track *tr = &TRACKS[tri];
+    int posontrack = (f_pos - tr->f_start) / ONE;
+    int f_trx0 = ONE*tr->x0;
+    int f_try0 = ONE*tr->y0;
+    int f_dirx = tr->f_dirx;
+    int f_diry = tr->f_diry;
+    *f_x = f_trx0 + posontrack * f_dirx;
+    *f_y = f_try0 + posontrack * f_diry;
+    *f_angle = tr->f_angle;
 }
 
 void draw_tracks(short offsetx, short offsety) {
