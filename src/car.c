@@ -4,7 +4,7 @@
 
 struct Car {
     int f_x, f_y;
-    int f_trackpos;
+    int f_coursepos;
     int trackidx;
     int f_angle;
 };
@@ -15,13 +15,14 @@ Car car;
 
 void car_setup() {
     car.f_x = car.f_y = 0;
-    car.f_trackpos = 0;
+    car.f_coursepos = 0;
     car.trackidx = 0;
     car.f_angle = 0;
 }
 
 void update_car() {
-    move_on_tracks(&car.f_x, &car.f_y, &car.f_trackpos, &car.trackidx, &car.f_angle, ONE*2);
+    move_on_track(&car.trackidx, &car.f_coursepos, ONE*4);
+    track_set_transform(&car.f_x, &car.f_y, &car.f_angle, car.trackidx, car.f_coursepos);
 }
 
 void car_set_camera(short *camerax, short *cameray) {
