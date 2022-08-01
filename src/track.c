@@ -86,10 +86,6 @@ void track_setup() {
         tr->y0 = y;
         tr->f_x0 = ONE * x;
         tr->f_y0 = ONE * y;
-        
-        int lensq = (tr->dx*tr->dx + tr->dy*tr->dy); 
-        int f_len = csqrt(lensq);
-        tr->f_len = f_len;
 
         int f_dx = tr->dx * ONE;
         int f_dy = tr->dy * ONE;
@@ -115,26 +111,21 @@ void move_on_tracks(int *f_x, int *f_y, int *f_pos, int *tri, int *f_angle, int 
     while (newtri >= 0 && newtri < NUM_TRACKS && f_move) {
         Track *tr = &TRACKS[newtri];
         *f_angle = tr->f_angle;
-        int f_trx0 = tr->f_x0;
-        int f_try0 = tr->f_y0;
-        int f_trx1 = tr->f_x0;
-        int f_try1 = tr->f_y0;
+        int f_destx = tr->f_x0;
+        int f_desty = tr->f_y0;
         if (f_move > 0) {
-            f_trx1 += ONE * tr->dx;
-            f_try1 += ONE * tr->dy;
-        } else {
-            f_trx0 += ONE * tr->dx;
-            f_try0 += ONE * tr->dy;
+            f_destx += ONE * tr->dx;
+            f_desty += ONE * tr->dy;
         }
 
-        int distx = (f_trx1 - f_newx) / ONE;
-        int disty = (f_try1 - f_newy) / ONE;
+        int distx = (f_destx - f_newx) / ONE;
+        int disty = (f_desty - f_newy) / ONE;
         int distsq = (distx * distx) + (disty * disty);
         int f_len = csqrt(distsq);
         int f_absmove = abs(f_move);
         if (f_absmove >= f_len) {
-            f_newx = f_trx1;
-            f_newy = f_try1;
+            f_newx = f_destx;
+            f_newy = f_desty;
             int dir = f_move >= 0 ? 1 : -1;
             f_move -= dir*f_len;
             f_newpos += dir*f_len;
