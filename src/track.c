@@ -80,24 +80,25 @@ u_char COLORCYCLE[] = {
 
 void track_setup() {
     Track *tr = TRACKS;
-    int f_x = 0, f_y = 0;
+    int x = 0, y = 0;
     for (int i = 0; i < NUM_TRACKS; ++i) {
-        tr->f_x0 = f_x;
-        tr->f_y0 = f_y;
-
-        int f_dx = tr->dx * ONE;
-        int f_dy = tr->dy * ONE;
+        tr->x0 = x;
+        tr->y0 = y;
+        tr->f_x0 = ONE * x;
+        tr->f_y0 = ONE * y;
         
         int lensq = (tr->dx*tr->dx + tr->dy*tr->dy); 
         int f_len = csqrt(lensq);
         tr->f_len = f_len;
 
+        int f_dx = tr->dx * ONE;
+        int f_dy = tr->dy * ONE;
         int f_angle = ratan2(f_dy, f_dx);
         tr->f_angle = f_angle;
         tr->f_dirx = ccos(f_angle);
         tr->f_diry = csin(f_angle);
-        f_x += f_dx;
-        f_y += f_dy;
+        x += tr->dx;
+        y += tr->dy;
 
         tr++;
     }
@@ -155,25 +156,22 @@ void draw_tracks(short offsetx, short offsety) {
     int cn = sizeof(COLORCYCLE);
     int ci = ((get_time() / 6) * 3) % cn;
     Track *tr = TRACKS;
-    short x = offsetx, y = offsety;
-    ColorVertex vertices[4];
-    vertices[0].b = vertices[1].b = vertices[2].b = vertices[3].b = 255;
-    for (int i = 0; i < NUM_TRACKS; i += 4) {
-        vertices->x = x;
-        vertices->y = y;
+    ColorVertex vertices[2];
+    for (int i = 0; i < NUM_TRACKS; ++i) {
+        vertices->x = tr->x0 + offsetx;
+        vertices->y = tr->y0 + offsety;
+        vertices[1].x = vertices->x + tr->dx;
+        vertices[1].y = vertices->y + tr->dy;
+
         vertices->r = COLORCYCLE[ci];
         vertices->g = COLORCYCLE[ci+1];
         vertices->b = COLORCYCLE[ci+2];
-        for (int j = 1; j < 4; ++j) {
-            x += tr[i+j].dx;
-            y += tr[i+j].dy;
-            ci = (ci + 3) % cn;
-            vertices[j].x = x;
-            vertices[j].y = y;
-            vertices[j].r = COLORCYCLE[ci];
-            vertices[j].g = COLORCYCLE[ci+1];
-            vertices[j].b = COLORCYCLE[ci+2];
-        }
-        draw_3lines_gouraud(vertices);
+        ci = (ci + 3) % cn;
+        vertices[1].r = COLORCYCLE[ci];
+        vertices[1].g = COLORCYCLE[ci+1];
+        vertices[1].b = COLORCYCLE[ci+2];
+
+        draw_line_gouraud(vertices);
+        ++tr;
     }
 }
