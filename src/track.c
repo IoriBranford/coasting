@@ -132,59 +132,65 @@ void track_setup() {
     for (int i = 0; i < NUM_TRACKS; ++i) {
         tr->x0 = x;
         tr->y0 = y;
-        tr->f_x0 = ONE * x;
-        tr->f_y0 = ONE * y;
-
-        int f_dx = tr->dx * ONE;
-        int f_dy = tr->dy * ONE;
-        int f_angle = ratan2(f_dy, f_dx);
-        tr->f_angle = f_angle;
-        tr->f_dirx = ccos(f_angle);
-        tr->f_diry = csin(f_angle);
         x += tr->dx;
         y += tr->dy;
-
         tr++;
     }
 }
 
 void move_on_tracks(int *f_x, int *f_y, int *f_pos, int *tri, int *f_angle, int f_speed) {
-    // int f_speed = ONE;
     int f_newx = *f_x, f_newy = *f_y;
     int f_newpos = *f_pos;
     int newtri = *tri;
-
     int f_move = f_speed;
 
     while (newtri >= 0 && newtri < NUM_TRACKS && f_move) {
         Track *tr = &TRACKS[newtri];
-        *f_angle = tr->f_angle;
-        int f_destx = tr->f_x0;
-        int f_desty = tr->f_y0;
+        int f_destx = tr->x0 * ONE;
+        int f_desty = tr->y0 * ONE;
+        int dir = -1;
         if (f_move > 0) {
+            dir = 1;
             f_destx += ONE * tr->dx;
             f_desty += ONE * tr->dy;
         }
 
-        int distx = (f_destx - f_newx) / ONE;
-        int disty = (f_desty - f_newy) / ONE;
+        int f_distx = (f_destx - f_newx);
+        int f_disty = (f_desty - f_newy);
+        int f_movex = f_distx;
+        int f_movey = f_disty;
+        if (f_distx || f_disty) {
+            int f_moveangle = ratan2(f_disty, f_distx);
+            *f_angle = f_moveangle;
+            if (f_move < 0)
+                *f_angle += ONE/2;
+            f_movex = abs(f_move) * ccos(f_moveangle) / ONE;
+            f_movey = abs(f_move) * csin(f_moveangle) / ONE;
+        }
+
+        int distx = f_distx / ONE;
+        int disty = f_disty / ONE;
         int distsq = (distx * distx) + (disty * disty);
-        int f_len = csqrt(distsq);
-        int f_absmove = abs(f_move);
-        if (f_absmove >= f_len) {
+        int f_len = csqrt(distsq*ONE);
+
+        if (abs(f_move) >= f_len) {
             f_newx = f_destx;
             f_newy = f_desty;
-            int dir = f_move >= 0 ? 1 : -1;
-            f_move -= dir*f_len;
-            f_newpos += dir*f_len;
+            int f_deltapos = dir*f_len;
+            f_move -= f_deltapos;
+            f_newpos += f_deltapos;
             newtri += dir;
         } else {
-            f_newx += f_move * tr->f_dirx / ONE;
-            f_newy += f_move * tr->f_diry / ONE;
+            f_newx += f_movex;
+            f_newy += f_movey;
             f_newpos += f_move;
             f_move = 0;
         }
     }
+    if (newtri < 0)
+        newtri = 0;
+    if (newtri >= NUM_TRACKS)
+        newtri = NUM_TRACKS-1;
     *f_x = f_newx;
     *f_y = f_newy;
     *f_pos = f_newpos;
