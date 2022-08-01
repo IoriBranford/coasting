@@ -27,13 +27,8 @@ int main() {
 	play_cdda(2, 1);
 
 	while (1) {
-		if (is_button_pressed(controller, BUTTON_RIGHT))
-			camerax--;
-		if (is_button_pressed(controller, BUTTON_LEFT))
-			camerax++;
-
 		update_car();
-
+		car_set_camera(&camerax, &cameray);
 		draw_begin();
 		draw_car(camerax, cameray);
 		draw_tracks(camerax, cameray);
