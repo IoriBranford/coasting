@@ -88,12 +88,14 @@ void track_setup() {
         int f_dx = tr->dx * ONE;
         int f_dy = tr->dy * ONE;
         
-        int f_lensq = f_dx*tr->dx + f_dy*tr->dy; 
+        int f_lensq = ONE * (tr->dx*tr->dx + tr->dy*tr->dy); 
         int f_len = csqrt(f_lensq);
         tr->f_len = f_len;
 
-        tr->f_dirx = ONE * f_dx / f_len;
-        tr->f_diry = ONE * f_dy / f_len;
+        int f_angle = ratan2(f_dy, f_dx);
+        tr->f_angle = f_angle;
+        tr->f_dirx = ccos(f_angle);
+        tr->f_diry = csin(f_angle);
         f_x += f_dx;
         f_y += f_dy;
 
@@ -124,15 +126,10 @@ void move_on_tracks(int *f_x, int *f_y, int *f_pos, int *tri, int f_speed) {
             f_try0 += ONE * tr->dy;
         }
 
-        int f_len;
-        if (f_newx == f_trx0 && f_newy == f_try0) {
-            f_len = tr->f_len;
-        } else {
-            int f_distx = f_trx1 - f_newx;
-            int f_disty = f_try1 - f_newy;
-            int f_distsq = (f_distx / ONE * f_distx) + (f_disty / ONE * f_disty);
-            f_len = csqrt(f_distsq);
-        }
+        int distx = (f_trx1 - f_newx) / ONE;
+        int disty = (f_try1 - f_newy) / ONE;
+        int distsq = (distx * distx) + (disty * disty);
+        int f_len = csqrt(ONE * distsq);
 
         if (abs(f_move) >= f_len) {
             f_newx = f_trx1;

@@ -6,6 +6,7 @@ struct Track {
     int f_x0, f_y0;
     short f_dirx, f_diry;
     int f_len;
+    int f_angle;
 };
 
 typedef struct Track Track;
