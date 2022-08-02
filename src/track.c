@@ -128,6 +128,10 @@ u_char COLORCYCLE[] = {
 
 int f_totallen;
 
+int is_course_end(int f_pos) {
+    return f_pos >= f_totallen;
+}
+
 void track_setup() {
     Track *tr = TRACKS;
     int x = 0, y = 0;
