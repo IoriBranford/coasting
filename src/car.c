@@ -1,12 +1,16 @@
 #include "car.h"
 #include "track.h"
 #include "draw.h"
+#include "input.h"
+
+#include <abs.h>
 
 struct Car {
     int f_x, f_y;
     int f_coursepos;
     int trackidx;
     int f_angle;
+    int f_speed;
 };
 
 typedef struct Car Car;
@@ -18,10 +22,27 @@ void car_setup() {
     car.f_coursepos = 0;
     car.trackidx = 0;
     car.f_angle = 0;
+    car.f_speed = 0;
 }
 
+#define F_DRIVE_FORCE (ONE/15)
+#define F_GRAVITY     (ONE/30)
+
 void update_car() {
-    move_on_track(&car.trackidx, &car.f_coursepos, ONE*4);
+    Controller *controller = get_controller(0);
+    if (is_button_pressed(controller, BUTTON_RIGHT)) {
+        car.f_speed += F_DRIVE_FORCE;
+    }
+    if (is_button_pressed(controller, BUTTON_LEFT)) {
+        car.f_speed -= F_DRIVE_FORCE;
+    }
+    int f_gravity = (csin(car.f_angle)) * F_GRAVITY / ONE;
+    car.f_speed += f_gravity;
+    if ((car.f_speed < 0 && car.f_coursepos <= 0)
+    || (car.f_speed > 0 && is_course_end(car.f_coursepos))) {
+        car.f_speed = 0;
+    }
+    move_on_track(&car.trackidx, &car.f_coursepos, car.f_speed);
     track_set_transform(&car.f_x, &car.f_y, &car.f_angle, car.trackidx, car.f_coursepos);
 }
 
