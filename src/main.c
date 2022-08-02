@@ -5,6 +5,7 @@
 #include "car.h"
 #include "time.h"
 #include "audio.h"
+#include "background.h"
 
 int main() {
 	short camerax = 60, cameray = 120;
@@ -32,7 +33,7 @@ int main() {
 		draw_begin();
 		draw_car(camerax, cameray);
 		draw_tracks(camerax, cameray);
-		
+		draw_background(camerax, cameray);
         FntFlush(-1);
 		draw_end();
 		time_tick();

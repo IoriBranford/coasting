@@ -20,6 +20,7 @@ SRCS = 	src/main.c \
 		src/audio.c \
 		src/track.c \
 		src/car.c \
+		src/background.c \
 ../third_party/common/syscalls/printf.s \
 ../third_party/common/crt0/crt0.s \
 
