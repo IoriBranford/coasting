@@ -16,6 +16,19 @@ ColorVertex ground[4] = {
 };
 
 void draw_background(short camerax, short cameray) {
+    ColorVertex groundline[2] = {
+        {.x = 0, .y = 120, .r = 0x5f, .g = 0x0e, .b = 0x87 },
+        {.x = 0, .y = 240, .r = 0x5f, .g = 0x0e, .b = 0x87 },
+    };
+    int linex = ((camerax * ONE / 16 / ONE) % 80) - 400;
+    for (int i = 0; i < 16; ++i) {
+        ColorVertex *v0 = groundline;
+        ColorVertex *v1 = groundline+1;
+        v1->x = linex;
+        v0->x = 160 + (linex-160)*ONE/16/ONE;
+        linex += 80;
+        draw_line_flat(groundline);
+    }
     draw_quad_flat(ground);
     draw_quad_gouraud(sky);
 }
