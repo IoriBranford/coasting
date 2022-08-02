@@ -29,6 +29,7 @@ void draw_triangle_gouraud(short tri[], u_char colors[]);
 void draw_quad_flat(ColorVertex v[]);
 void draw_quad_gouraud(ColorVertex v[]);
 
+void draw_line_flat(ColorVertex v[]);
 void draw_line_gouraud(ColorVertex v[]);
 void draw_2lines_gouraud(ColorVertex v[]);
 void draw_3lines_gouraud(ColorVertex v[]);

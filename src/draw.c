@@ -152,6 +152,15 @@ void draw_quad_gouraud(ColorVertex v[]) {
     nextpri += sizeof(POLY_G4);
 }
 
+void draw_line_flat(ColorVertex v[]) {
+    LINE_F2 *line = (LINE_F2*)nextpri;
+    setLineF2(line);
+    setRGB0(line, v->r, v->g, v->b);
+    setXY2(line, v->x, v->y, v[1].x, v[1].y);
+    addPrim(ot[db], line);
+    nextpri += sizeof(LINE_F2);
+}
+
 void draw_line_gouraud(ColorVertex v[]) {
     LINE_G2 *line = (LINE_G2*)nextpri;
     setLineG2(line);
