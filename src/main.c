@@ -29,6 +29,7 @@ int main() {
 		update_car();
 		car_set_camera(&camerax, &cameray);
 		draw_begin();
+		draw_hud();
 		draw_car(camerax, cameray);
 		draw_tracks(camerax, cameray);
 		draw_background(camerax, cameray);

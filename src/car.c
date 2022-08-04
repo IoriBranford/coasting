@@ -5,6 +5,12 @@
 
 #include <abs.h>
 
+#define MAX_FUEL 3600
+#define DRIVE_FUEL_COST 3
+#define F_DRIVE_FORCE (ONE/15)
+#define F_GRAVITY     (ONE/30)
+#define MAX_SPEED (ONE*10)
+
 struct Car {
     int x, y;
     int f_coursepos;
@@ -12,6 +18,7 @@ struct Car {
     int f_angle;
     int f_speed;
     int f_accel;
+    int fuel;
 };
 
 typedef struct Car Car;
@@ -25,19 +32,20 @@ void car_setup() {
     car.f_angle = 0;
     car.f_speed = 0;
     car.f_accel = 0;
+    car.fuel = MAX_FUEL;
 }
-
-#define F_DRIVE_FORCE (ONE/15)
-#define F_GRAVITY     (ONE/30)
 
 void update_car() {
     Controller *controller = get_controller(0);
-    if (is_button_pressed(controller, BUTTON_RIGHT)) {
+    if (car.fuel > 0 && is_button_pressed(controller, BUTTON_RIGHT)) {
         car.f_accel = F_DRIVE_FORCE;
-    } else if (is_button_pressed(controller, BUTTON_LEFT)) {
+        car.fuel -= DRIVE_FUEL_COST;
+    } else if (car.fuel > 0 && is_button_pressed(controller, BUTTON_LEFT)) {
         car.f_accel = -F_DRIVE_FORCE;
+        car.fuel -= DRIVE_FUEL_COST;
     } else {
         car.f_accel = 0;
+        car.fuel--;
     }
     car.f_speed += car.f_accel;
     int f_gravity = (csin(car.f_angle)) * F_GRAVITY / ONE;
@@ -46,12 +54,17 @@ void update_car() {
     || (car.f_speed > 0 && is_course_end(car.f_coursepos))) {
         car.f_speed = 0;
     }
+    if (car.f_speed > MAX_SPEED)
+        car.f_speed = MAX_SPEED;
+    else if (car.f_speed < -MAX_SPEED)
+        car.f_speed = -MAX_SPEED;
+
     move_on_track(&car.trackidx, &car.f_coursepos, car.f_speed);
     track_set_transform(&car.x, &car.y, &car.f_angle, car.trackidx, car.f_coursepos);
 }
 
 void car_set_camera(short *camerax, short *cameray) {
-    int x = car.x, y = car.y, _;
+    int x = car.x, y = car.y;
     *camerax = 160-x;
     *cameray = 120-y;
 }
@@ -80,4 +93,33 @@ void draw_car(short camerax, short cameray) {
         0, 0, 0 // pad
 	};
     draw_triangle_gouraud(triangle, colors);
+}
+
+ColorVertex fuelgauge[] = {
+    {.x = 8, .y = 60, .r = 0, .g = 255, .b = 255},
+    {.x = 16, .y = 60, .r = 0, .g = 255, .b = 255},
+    {.x = 8, .y = 180, .r = 255, .g = 0, .b = 255},
+    {.x = 16, .y = 180, .r = 255, .g = 0, .b = 255},
+};
+
+ColorVertex speedgauge[] = {
+    {.x = 80, .y = 224, .r = 0xe4, .g = 0x3, .b = 0x95},//#E40395
+    {.x = 80, .y = 232, .r = 0xe4, .g = 0x3, .b = 0x95},
+    {.x = 240, .y = 224, .r = 0xe5, .g = 0x9b, .b = 0x30},
+    {.x = 240, .y = 232, .r = 0xe5, .g = 0x9b, .b = 0x30},
+};
+
+void draw_hud() {
+    set_draw_area(0);
+
+    int fuelheight = car.fuel * 120 / MAX_FUEL;
+    RECT gaugerect = {0, 60+120-fuelheight, 320, fuelheight};
+    draw_quad_gouraud(fuelgauge);
+    set_draw_area(&gaugerect);
+
+    int speedwidth = car.f_speed * 160 / MAX_SPEED;
+    gaugerect.x = 80; gaugerect.y = 0;
+    gaugerect.w = speedwidth; gaugerect.h = 240;
+    draw_quad_gouraud(speedgauge);
+    set_draw_area(&gaugerect);
 }
