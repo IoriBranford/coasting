@@ -9,7 +9,6 @@
 
 int main() {
 	short camerax = 60, cameray = 120;
-	Controller *controller;
 
 	draw_setup(0, 320, 240);
 	set_clear_color(32, 0, 32);
@@ -20,7 +19,6 @@ int main() {
 
 	audio_setup();
 	input_setup();
-	controller = get_controller(0);
 
 	track_setup();
 	car_setup();
