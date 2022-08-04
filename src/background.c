@@ -29,6 +29,17 @@ void draw_background(short camerax, short cameray) {
         linex += 80;
         draw_line_flat(groundline);
     }
+    groundline->x = 0;
+    groundline[1].x = 320;
+    int fib0 = 2, fib1 = 3;
+    do {
+        groundline->y = groundline[1].y = 118 + fib0;
+        draw_line_flat(groundline);
+
+        int fib2 = fib0 + fib1;
+        fib0 = fib1;
+        fib1 = fib2;
+    } while (groundline->y < 240);
     draw_quad_flat(ground);
     draw_quad_gouraud(sky);
 }
