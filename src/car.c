@@ -59,8 +59,8 @@ void update_car() {
     else if (car.f_speed < -MAX_SPEED)
         car.f_speed = -MAX_SPEED;
 
-    move_on_track(&car.trackidx, &car.f_coursepos, car.f_speed);
-    track_set_transform(&car.x, &car.y, &car.f_angle, car.trackidx, car.f_coursepos);
+    move_on_course(&car.trackidx, &car.f_coursepos, car.f_speed);
+    course_transform_car(&car.x, &car.y, &car.f_angle, car.trackidx, car.f_coursepos);
 }
 
 void car_set_camera(short *camerax, short *cameray) {

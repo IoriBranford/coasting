@@ -10,10 +10,10 @@ struct Track {
 
 typedef struct Track Track;
 
-void track_setup();
+void course_setup(int n, Track *c);
 int is_course_end(int f_pos);
-void move_on_track(int *trackidx, int *f_position, int f_speed);
-void track_set_transform(int *x, int *y, int *f_angle, int tri, int f_pos);
-void draw_tracks(short offsetx, short offsety);
+void move_on_course(int *trackidx, int *f_position, int f_speed);
+void course_transform_car(int *x, int *y, int *f_angle, int tri, int f_pos);
+void draw_course(short offsetx, short offsety);
 
 #endif

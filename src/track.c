@@ -121,25 +121,30 @@ Track TRACKS[] = {
 };
 const int NUM_TRACKS = sizeof(TRACKS)/sizeof(Track);
 
+
 u_char COLORCYCLE[] = {
     255, 0, 255,
     0, 255, 255,
 };
 
-int f_totallen;
+int f_courselength;
+Track *course;
+int coursesize;
 
 int is_course_end(int f_pos) {
-    return f_pos >= f_totallen;
+    return f_pos >= f_courselength;
 }
 
-void track_setup() {
-    Track *tr = TRACKS;
+void course_setup(int n, Track *c) {
+    course = c;
+    coursesize = n;
+    Track *tr = c;
     int x = 0, y = 0;
-    f_totallen = 0;
-    for (int i = 0; i < NUM_TRACKS; ++i) {
+    f_courselength = 0;
+    for (int i = 0; i < n; ++i) {
         tr->x0 = x;
         tr->y0 = y;
-        tr->f_start = f_totallen;
+        tr->f_start = f_courselength;
         int distx = tr->dx;
         int disty = tr->dy;
         tr->f_angle = ratan2(disty*ONE, distx*ONE);
@@ -153,92 +158,33 @@ void track_setup() {
         tr->f_len = f_len;
         x += distx;
         y += disty;
-        f_totallen += f_len;
+        f_courselength += f_len;
         tr++;
     }
-}
-
-void move_on_tracks(int *f_x, int *f_y, int *f_pos, int *tri, int *f_angle, int f_speed) {
-    int f_newx = *f_x, f_newy = *f_y;
-    int f_newpos = *f_pos;
-    int newtri = *tri;
-    int f_move = f_speed;
-
-    while (newtri >= 0 && newtri < NUM_TRACKS && f_move) {
-        Track *tr = &TRACKS[newtri];
-        int f_destx = tr->x0 * ONE;
-        int f_desty = tr->y0 * ONE;
-        int dir = -1;
-        if (f_move > 0) {
-            dir = 1;
-            f_destx += ONE * tr->dx;
-            f_desty += ONE * tr->dy;
-        }
-
-        int f_distx = (f_destx - f_newx);
-        int f_disty = (f_desty - f_newy);
-        int f_movex = f_distx;
-        int f_movey = f_disty;
-        if (f_distx || f_disty) {
-            int f_moveangle = ratan2(f_disty, f_distx);
-            *f_angle = f_moveangle;
-            if (f_move < 0)
-                *f_angle += ONE/2;
-            f_movex = abs(f_move) * ccos(f_moveangle) / ONE;
-            f_movey = abs(f_move) * csin(f_moveangle) / ONE;
-        }
-
-        int distx = f_distx / ONE;
-        int disty = f_disty / ONE;
-        int distsq = (distx * distx) + (disty * disty);
-        int f_len = csqrt(distsq*ONE);
-
-        if (abs(f_move) >= f_len) {
-            f_newx = f_destx;
-            f_newy = f_desty;
-            int f_deltapos = dir*f_len;
-            f_move -= f_deltapos;
-            f_newpos += f_deltapos;
-            newtri += dir;
-        } else {
-            f_newx += f_movex;
-            f_newy += f_movey;
-            f_newpos += f_move;
-            f_move = 0;
-        }
-    }
-    if (newtri < 0)
-        newtri = 0;
-    if (newtri >= NUM_TRACKS)
-        newtri = NUM_TRACKS-1;
-    *f_x = f_newx;
-    *f_y = f_newy;
-    *f_pos = f_newpos;
-    *tri = newtri;
 }
 
 int clamp_course_position(int f_pos) {
     if (f_pos < 0)
         f_pos = 0;
-    if (f_pos > f_totallen)
-        f_pos = f_totallen;
+    if (f_pos > f_courselength)
+        f_pos = f_courselength;
     return f_pos;
 }
 
 int clamp_track_index(int i) {
     if (i < 0)
         i = 0;
-    if (i >= NUM_TRACKS)
-        i = NUM_TRACKS-1;
+    if (i >= coursesize)
+        i = coursesize-1;
     return i;
 }
 
-void move_on_track(int *trackidx, int *f_position, int f_speed) {
+void move_on_course(int *trackidx, int *f_position, int f_speed) {
     int tri = *trackidx;
     int f_pos = *f_position;
     f_pos += f_speed;
-    while (tri >= 0 && tri < NUM_TRACKS) {
-        Track *tr = &TRACKS[tri];
+    while (tri >= 0 && tri < coursesize) {
+        Track *tr = &course[tri];
         int f_dest = tr->f_start;
         if (f_speed > 0) {
             f_dest += tr->f_len;
@@ -260,10 +206,10 @@ void move_on_track(int *trackidx, int *f_position, int f_speed) {
     *f_position = f_pos;
 }
 
-void track_set_transform(int *x, int *y, int *f_angle, int tri, int f_pos) {
+void course_transform_car(int *x, int *y, int *f_angle, int tri, int f_pos) {
     f_pos = clamp_course_position(f_pos);
     tri = clamp_track_index(tri);
-    Track *tr = &TRACKS[tri];
+    Track *tr = &course[tri];
     int posontrack = (f_pos - tr->f_start) / ONE;
     int f_dirx = tr->f_dirx;
     int f_diry = tr->f_diry;
@@ -272,12 +218,12 @@ void track_set_transform(int *x, int *y, int *f_angle, int tri, int f_pos) {
     *f_angle = tr->f_angle;
 }
 
-void draw_tracks(short offsetx, short offsety) {
+void draw_course(short offsetx, short offsety) {
     int cn = sizeof(COLORCYCLE);
     int ci = ((get_time() / 6) * 3) % cn;
-    Track *tr = TRACKS;
+    Track *tr = course;
     ColorVertex vertices[2];
-    for (int i = 0; i < NUM_TRACKS; ++i) {
+    for (int i = 0; i < coursesize; ++i) {
         vertices->x = tr->x0 + offsetx;
         vertices->y = tr->y0 + offsety;
         vertices[1].x = vertices->x + tr->dx;

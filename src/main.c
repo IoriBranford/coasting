@@ -6,6 +6,7 @@
 #include "time.h"
 #include "audio.h"
 #include "background.h"
+#include "courses.h"
 
 int main() {
 	short camerax = 60, cameray = 120;
@@ -20,7 +21,7 @@ int main() {
 	audio_setup();
 	input_setup();
 
-	track_setup();
+	course_setup(COURSE_0_SIZE, COURSE_0);
 	car_setup();
 
 	play_cdda(2, 1);
@@ -31,7 +32,7 @@ int main() {
 		draw_begin();
 		draw_hud();
 		draw_car(camerax, cameray);
-		draw_tracks(camerax, cameray);
+		draw_course(camerax, cameray);
 		draw_background(camerax, cameray);
         FntFlush(-1);
 		draw_end();
