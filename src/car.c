@@ -116,7 +116,10 @@ void draw_hud() {
     RECT gaugerect = {0, 60+120-fuelheight, 320, fuelheight};
     draw_quad_gouraud(fuelgauge);
     set_draw_area(&gaugerect);
+}
 
+void draw_speed_gauge() {
+    RECT gaugerect;
     int speedwidth = car.f_speed * 160 / MAX_SPEED;
     gaugerect.x = 80; gaugerect.y = 0;
     gaugerect.w = speedwidth; gaugerect.h = 240;
