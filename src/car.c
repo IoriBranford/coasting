@@ -6,11 +6,12 @@
 #include <abs.h>
 
 struct Car {
-    int f_x, f_y;
+    int x, y;
     int f_coursepos;
     int trackidx;
     int f_angle;
     int f_speed;
+    int f_accel;
 };
 
 typedef struct Car Car;
@@ -18,11 +19,12 @@ typedef struct Car Car;
 Car car;
 
 void car_setup() {
-    car.f_x = car.f_y = 0;
+    car.x = car.y = 0;
     car.f_coursepos = 0;
     car.trackidx = 0;
     car.f_angle = 0;
     car.f_speed = 0;
+    car.f_accel = 0;
 }
 
 #define F_DRIVE_FORCE (ONE/15)
@@ -31,11 +33,13 @@ void car_setup() {
 void update_car() {
     Controller *controller = get_controller(0);
     if (is_button_pressed(controller, BUTTON_RIGHT)) {
-        car.f_speed += F_DRIVE_FORCE;
+        car.f_accel = F_DRIVE_FORCE;
+    } else if (is_button_pressed(controller, BUTTON_LEFT)) {
+        car.f_accel = -F_DRIVE_FORCE;
+    } else {
+        car.f_accel = 0;
     }
-    if (is_button_pressed(controller, BUTTON_LEFT)) {
-        car.f_speed -= F_DRIVE_FORCE;
-    }
+    car.f_speed += car.f_accel;
     int f_gravity = (csin(car.f_angle)) * F_GRAVITY / ONE;
     car.f_speed += f_gravity;
     if ((car.f_speed < 0 && car.f_coursepos <= 0)
@@ -43,17 +47,18 @@ void update_car() {
         car.f_speed = 0;
     }
     move_on_track(&car.trackidx, &car.f_coursepos, car.f_speed);
-    track_set_transform(&car.f_x, &car.f_y, &car.f_angle, car.trackidx, car.f_coursepos);
+    track_set_transform(&car.x, &car.y, &car.f_angle, car.trackidx, car.f_coursepos);
 }
 
 void car_set_camera(short *camerax, short *cameray) {
-    *camerax = 160-car.f_x/ONE;
-    *cameray = 120-car.f_y/ONE;
+    int x = car.x, y = car.y, _;
+    *camerax = 160-x;
+    *cameray = 120-y;
 }
 
 void draw_car(short camerax, short cameray) {
-    int f_screenx = car.f_x + camerax*ONE;
-    int f_screeny = car.f_y + cameray*ONE;
+    int screenx = car.x + camerax;
+    int screeny = car.y + cameray;
     int f_cos = ccos(car.f_angle);
     int f_sin = csin(car.f_angle);
 	short triangle[] = {
@@ -64,8 +69,8 @@ void draw_car(short camerax, short cameray) {
     for (int i = 0; i < 6; i += 2) {
         int tx = triangle[i];
         int ty = triangle[i+1];
-        triangle[i]   = (tx * f_cos - ty * f_sin + f_screenx) / ONE;
-        triangle[i+1] = (tx * f_sin + ty * f_cos + f_screeny) / ONE;
+        triangle[i]   = (tx * f_cos - ty * f_sin) / ONE + screenx;
+        triangle[i+1] = (tx * f_sin + ty * f_cos) / ONE + screeny;
     }
 
 	u_char colors[] = {

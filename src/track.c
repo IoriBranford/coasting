@@ -217,6 +217,22 @@ void move_on_tracks(int *f_x, int *f_y, int *f_pos, int *tri, int *f_angle, int 
     *tri = newtri;
 }
 
+int clamp_course_position(int f_pos) {
+    if (f_pos < 0)
+        f_pos = 0;
+    if (f_pos > f_totallen)
+        f_pos = f_totallen;
+    return f_pos;
+}
+
+int clamp_track_index(int i) {
+    if (i < 0)
+        i = 0;
+    if (i >= NUM_TRACKS)
+        i = NUM_TRACKS-1;
+    return i;
+}
+
 void move_on_track(int *trackidx, int *f_position, int f_speed) {
     int tri = *trackidx;
     int f_pos = *f_position;
@@ -237,28 +253,22 @@ void move_on_track(int *trackidx, int *f_position, int f_speed) {
                 break;
         }
     }
-    if (f_pos < 0)
-        f_pos = 0;
-    if (f_pos > f_totallen)
-        f_pos = f_totallen;
-    if (tri < 0)
-        tri = 0;
-    if (tri >= NUM_TRACKS)
-        tri = NUM_TRACKS-1;
+    f_pos = clamp_course_position(f_pos);
+    tri = clamp_track_index(tri);
 
     *trackidx = tri;
     *f_position = f_pos;
 }
 
-void track_set_transform(int *f_x, int *f_y, int *f_angle, int tri, int f_pos) {
+void track_set_transform(int *x, int *y, int *f_angle, int tri, int f_pos) {
+    f_pos = clamp_course_position(f_pos);
+    tri = clamp_track_index(tri);
     Track *tr = &TRACKS[tri];
     int posontrack = (f_pos - tr->f_start) / ONE;
-    int f_trx0 = ONE*tr->x0;
-    int f_try0 = ONE*tr->y0;
     int f_dirx = tr->f_dirx;
     int f_diry = tr->f_diry;
-    *f_x = f_trx0 + posontrack * f_dirx;
-    *f_y = f_try0 + posontrack * f_diry;
+    *x = tr->x0 + posontrack * f_dirx / ONE;
+    *y = tr->y0 + posontrack * f_diry / ONE;
     *f_angle = tr->f_angle;
 }
 
