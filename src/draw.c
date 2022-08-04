@@ -8,6 +8,8 @@
 
 DISPENV disp[2];
 DRAWENV draw[2];
+RECT baseareas[2];
+u_short baseoffsets[2][2];
 int db = 0;
 
 u_long ot[2][OTLEN];    // Ordering table length
@@ -29,6 +31,10 @@ void draw_setup(int region, int w, int h) {
     // Second buffer
     SetDefDispEnv(&disp[1], 0, h, w, h);
     SetDefDrawEnv(&draw[1], 0, 0, w, h);
+    setRECT(baseareas, 0, h, w, h);
+    setRECT(baseareas+1, 0, 0, w, h);
+    baseoffsets[0][0] = 0; baseoffsets[0][1] = h;
+    baseoffsets[1][0] = 0; baseoffsets[1][1] = 0;
 
     SetDispMask(1);             // Enable the display
 
@@ -54,13 +60,42 @@ void draw_begin() {
     ClearOTagR(ot[db], OTLEN);  // Clear ordering table
 }
 
-void draw_rect(short x, short y, short w, short h) {
+void set_draw_area(RECT *customarea) {
+    RECT *basearea = baseareas+db;
+    RECT area;
+    if (customarea) {
+        setRECT(&area, basearea->x + customarea->x, basearea->y + customarea->y, customarea->w, customarea->h);
+    } else {
+        setRECT(&area, basearea->x, basearea->y, basearea->w, basearea->h);
+    }
+    DR_AREA *prim = (DR_AREA*)nextpri;
+    SetDrawArea(prim, &area);
+    addPrim(ot[db], prim);
+    nextpri += sizeof(DR_AREA);
+}
+
+void set_draw_offset(u_short *customoffset) {
+    u_short *baseoffset = baseoffsets[db];
+    u_short offset[2];
+    offset[0] = baseoffset[0];
+    offset[1] = baseoffset[1];
+    if (customoffset) {
+        offset[0] += customoffset[0];
+        offset[1] += customoffset[1];
+    }
+    DR_OFFSET *prim = (DR_OFFSET*)nextpri;
+    SetDrawOffset(prim, offset);
+    addPrim(ot[db], prim);
+    nextpri += sizeof(DR_OFFSET);
+}
+
+void draw_rect(ColorVertex *v, short w, short h) {
     TILE *tile = (TILE*)nextpri;      // Cast next primitive
 
     setTile(tile);              // Initialize the primitive (very important)
-    setXY0(tile, x, y);       // Set primitive (x,y) position
+    setXY0(tile, v->x, v->y);       // Set primitive (x,y) position
     setWH(tile, w, h);        // Set primitive size
-    setRGB0(tile, drawcolor[0], drawcolor[1], drawcolor[2]); 
+    setRGB0(tile, v->r, v->g, v->b); 
     addPrim(ot[db], tile);      // Add primitive to the ordering table
     
     nextpri += sizeof(TILE);    // Advance the next primitive pointer
@@ -86,6 +121,17 @@ void draw_square8(ColorVertex *v) {
     addPrim(ot[db], tile);      // Add primitive to the ordering table
     
     nextpri += sizeof(TILE_8);    // Advance the next primitive pointer
+}
+
+void draw_pixel(ColorVertex *v) {
+    TILE_1 *tile = (TILE_1*)nextpri;      // Cast next primitive
+
+    setTile1(tile);              // Initialize the primitive (very important)
+    setXY0(tile, v->x, v->y);       // Set primitive (x,y) position
+    setRGB0(tile, v->r, v->g, v->b); 
+    addPrim(ot[db], tile);      // Add primitive to the ordering table
+    
+    nextpri += sizeof(TILE_1);    // Advance the next primitive pointer
 }
 
 void draw_sprite(short x, short y, short w, short h, TIM_IMAGE *image, u_char u, u_char v) {
