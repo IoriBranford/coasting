@@ -1,7 +1,7 @@
 #include "draw.h"
 #include "image.h"
 #include "input.h"
-#include "track.h"
+#include "course.h"
 #include "car.h"
 #include "time.h"
 #include "audio.h"
@@ -22,7 +22,7 @@ int main() {
 	audio_setup();
 	input_setup();
 
-	course_setup(COURSE_0_SIZE, COURSE_0);
+	select_course(0);
 	car_setup();
 	clear_particles();
 

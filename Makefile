@@ -18,7 +18,7 @@ SRCS = 	src/main.c \
 		src/input.c \
 		src/time.c \
 		src/audio.c \
-		src/track.c \
+		src/course.c \
 		src/car.c \
 		src/background.c \
 		src/courses.c \
