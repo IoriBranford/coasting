@@ -2,8 +2,11 @@
 #include "track.h"
 #include "draw.h"
 #include "input.h"
+#include "time.h"
+#include "particle.h"
 
 #include <abs.h>
+#include <rand.h>
 
 #define MAX_FUEL 3600
 #define DRIVE_FUEL_COST 3
@@ -58,6 +61,18 @@ void update_car() {
         car.f_speed = MAX_SPEED;
     else if (car.f_speed < -MAX_SPEED)
         car.f_speed = -MAX_SPEED;
+
+    int f_partspeed = car.f_speed * (rand()%ONE) / ONE;
+    if (f_partspeed) {
+        int f_angle = car.f_angle - ONE/2 + (rand()%(ONE/6)) - ONE/12;
+        int f_partvelx = ccos(f_angle) * f_partspeed / ONE;
+        int f_partvely = csin(f_angle) * f_partspeed / ONE;
+        ColorVertex v = {
+            .x = car.x + f_partspeed/ONE, .y = car.y + f_partspeed/ONE, .r = 0, .g = 255, .b = 255
+        };
+        u_int time = abs(f_partspeed)*10/ONE;
+        add_particle(&v, f_partvelx, f_partvely, time);
+    }
 
     move_on_course(&car.trackidx, &car.f_coursepos, car.f_speed);
     course_transform_car(&car.x, &car.y, &car.f_angle, car.trackidx, car.f_coursepos);

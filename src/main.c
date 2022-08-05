@@ -7,6 +7,7 @@
 #include "audio.h"
 #include "background.h"
 #include "courses.h"
+#include "particle.h"
 
 int main() {
 	short camera[2];
@@ -23,21 +24,29 @@ int main() {
 
 	course_setup(COURSE_0_SIZE, COURSE_0);
 	car_setup();
+	clear_particles();
 
 	play_cdda(2, 1);
-
 	while (1) {
 		update_car();
+		update_particles();
+
 		car_set_camera(camera, camera+1);
 		draw_begin();
+
 		draw_hud();
 		set_draw_offset(0);
+
+		draw_particles();
 		draw_car();
 		draw_course();
 		set_draw_offset(camera);
+
 		draw_background(camera[0], camera[1]);
+
         FntFlush(-1);
 		draw_end();
+
 		time_tick();
 	}
 	return 0;
