@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="3" nextobjectid="2">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="3">
  <editorsettings>
   <export target="../src/courses.c" format="custom"/>
  </editorsettings>
- <objectgroup id="2" name="courses">
-  <object id="1" x="0" y="0">
+ <objectgroup id="2" name="intro" class="Course">
+  <object id="1" name="tracks" x="0" y="0">
    <polyline points="0,0 64,0 80,8 96,24 160,232 176,248 192,256 256,256"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="uphill">
+  <object id="2" name="tracks" x="0" y="0">
+   <polyline points="0,0 64,0 80,-8 96,-24 112,-48 128,-64 144,-72 256,-72"/>
   </object>
  </objectgroup>
 </map>
