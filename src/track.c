@@ -218,14 +218,14 @@ void course_transform_car(int *x, int *y, int *f_angle, int tri, int f_pos) {
     *f_angle = tr->f_angle;
 }
 
-void draw_course(short offsetx, short offsety) {
+void draw_course() {
     int cn = sizeof(COLORCYCLE);
     int ci = ((get_time() / 6) * 3) % cn;
     Track *tr = course;
     ColorVertex vertices[2];
     for (int i = 0; i < coursesize; ++i) {
-        vertices->x = tr->x0 + offsetx;
-        vertices->y = tr->y0 + offsety;
+        vertices->x = tr->x0;
+        vertices->y = tr->y0;
         vertices[1].x = vertices->x + tr->dx;
         vertices[1].y = vertices->y + tr->dy;
 

@@ -32,8 +32,8 @@ int main() {
 		draw_begin();
 		draw_hud();
 		set_draw_offset(0);
-		draw_car(0, 0);
-		draw_course(0, 0);
+		draw_car();
+		draw_course();
 		set_draw_offset(camera);
 		draw_background(camera[0], camera[1]);
         FntFlush(-1);

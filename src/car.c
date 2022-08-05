@@ -69,9 +69,9 @@ void car_set_camera(short *camerax, short *cameray) {
     *cameray = 120-y;
 }
 
-void draw_car(short camerax, short cameray) {
-    int screenx = car.x + camerax;
-    int screeny = car.y + cameray;
+void draw_car() {
+    int screenx = car.x;
+    int screeny = car.y;
     int f_cos = ccos(car.f_angle);
     int f_sin = csin(car.f_angle);
 	short triangle[] = {
