@@ -18,11 +18,12 @@ void set_draw_color(u_char r, u_char g, u_char b);
 void draw_begin();
 
 void set_draw_area(RECT *area);
-void set_draw_offset(u_short *offset);
+void set_draw_offset(short *offset);
 
 void draw_rect(ColorVertex *v, short w, short h);
 void draw_square16(ColorVertex *v);
 void draw_square8(ColorVertex *v);
+void draw_pixel(ColorVertex *v);
 
 void draw_sprite(short x, short y, short w, short h, TIM_IMAGE *image, u_char u, u_char v);
 void set_draw_sprite_page(TIM_IMAGE *image);

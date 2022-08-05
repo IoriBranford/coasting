@@ -9,7 +9,7 @@
 DISPENV disp[2];
 DRAWENV draw[2];
 RECT baseareas[2];
-u_short baseoffsets[2][2];
+short baseoffsets[2][2];
 int db = 0;
 
 u_long ot[2][OTLEN];    // Ordering table length
@@ -74,9 +74,9 @@ void set_draw_area(RECT *customarea) {
     nextpri += sizeof(DR_AREA);
 }
 
-void set_draw_offset(u_short *customoffset) {
-    u_short *baseoffset = baseoffsets[db];
-    u_short offset[2];
+void set_draw_offset(short *customoffset) {
+    short *baseoffset = baseoffsets[db];
+    short offset[2];
     offset[0] = baseoffset[0];
     offset[1] = baseoffset[1];
     if (customoffset) {
