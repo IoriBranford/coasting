@@ -84,7 +84,7 @@ void set_draw_offset(short *customoffset) {
         offset[1] += customoffset[1];
     }
     DR_OFFSET *prim = (DR_OFFSET*)nextpri;
-    SetDrawOffset(prim, offset);
+    SetDrawOffset(prim, (u_short*)offset); // sdk is wrong
     addPrim(ot[db], prim);
     nextpri += sizeof(DR_OFFSET);
 }
