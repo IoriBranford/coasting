@@ -9,7 +9,7 @@
 #include "courses.h"
 
 int main() {
-	short camerax = 60, cameray = 120;
+	short camera[2];
 
 	draw_setup(0, 320, 240);
 	set_clear_color(32, 0, 32);
@@ -28,12 +28,14 @@ int main() {
 
 	while (1) {
 		update_car();
-		car_set_camera(&camerax, &cameray);
+		car_set_camera(camera, camera+1);
 		draw_begin();
 		draw_hud();
-		draw_car(camerax, cameray);
-		draw_course(camerax, cameray);
-		draw_background(camerax, cameray);
+		set_draw_offset(0);
+		draw_car(0, 0);
+		draw_course(0, 0);
+		set_draw_offset(camera);
+		draw_background(camera[0], camera[1]);
         FntFlush(-1);
 		draw_end();
 		time_tick();
