@@ -5,7 +5,7 @@
 #include <libgte.h>	// GTE header, not really used but libgpu.h depends on it
 #include <libgpu.h>	// GPU library header
 
-typedef struct {
+typedef struct ColorVertex {
     u_char	r, g, b, _;
 	short	x, y;
 } ColorVertex;
