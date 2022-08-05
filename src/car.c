@@ -96,17 +96,17 @@ void draw_car(short camerax, short cameray) {
 }
 
 ColorVertex fuelgauge[] = {
-    {.x = 8, .y = 60, .r = 0, .g = 255, .b = 255},
-    {.x = 16, .y = 60, .r = 0, .g = 255, .b = 255},
-    {.x = 8, .y = 180, .r = 255, .g = 0, .b = 255},
-    {.x = 16, .y = 180, .r = 255, .g = 0, .b = 255},
+    {.x = 8, .y = 60,   .r = 0xe5, .g = 0x9b, .b = 0x30},
+    {.x = 16, .y = 60,  .r = 0xe5, .g = 0x9b, .b = 0x30},
+    {.x = 8, .y = 180,  .r = 0xe4, .g =  0x3, .b = 0x95},
+    {.x = 16, .y = 180, .r = 0xe4, .g =  0x3, .b = 0x95},
 };
 
 ColorVertex speedgauge[] = {
-    {.x = 80, .y = 224, .r = 0xe4, .g = 0x3, .b = 0x95},//#E40395
-    {.x = 80, .y = 232, .r = 0xe4, .g = 0x3, .b = 0x95},
-    {.x = 240, .y = 224, .r = 0xe5, .g = 0x9b, .b = 0x30},
-    {.x = 240, .y = 232, .r = 0xe5, .g = 0x9b, .b = 0x30},
+    {.x = 80, .y = 224,  .r = 0xff, .g =  0, .b = 0xff},//#E40395
+    {.x = 80, .y = 232,  .r = 0xff, .g =  0, .b = 0xff},
+    {.x = 240, .y = 224, .r = 0, .g = 0xff, .b = 0xff},
+    {.x = 240, .y = 232, .r = 0, .g = 0xff, .b = 0xff},
 };
 
 void draw_hud() {
