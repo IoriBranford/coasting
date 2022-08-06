@@ -29,9 +29,9 @@ void draw_sprite(short x, short y, short w, short h, TIM_IMAGE *image, u_char u,
 void set_draw_sprite_page(TIM_IMAGE *image);
 
 void draw_triangle_flat(short tri[]);
-void draw_triangle_gouraud(short tri[], u_char colors[]);
+POLY_G3* draw_triangle_gouraud(short tri[], u_char colors[]);
 void draw_quad_flat(ColorVertex v[]);
-void draw_quad_gouraud(ColorVertex v[]);
+POLY_G4* draw_quad_gouraud(ColorVertex v[]);
 
 void draw_line_flat(ColorVertex v[]);
 void draw_line_gouraud(ColorVertex v[]);

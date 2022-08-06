@@ -166,7 +166,7 @@ void draw_triangle_flat(short tri[]) {
     nextpri += sizeof(POLY_F3);
 }
 
-void draw_triangle_gouraud(short tri[], u_char colors[]) {
+POLY_G3* draw_triangle_gouraud(short tri[], u_char colors[]) {
     POLY_G3 *poly = (POLY_G3*)nextpri;
     setPolyG3(poly);
     setRGB0(poly, colors[0], colors[1], colors[2]);
@@ -175,6 +175,7 @@ void draw_triangle_gouraud(short tri[], u_char colors[]) {
     setXY3(poly, tri[0], tri[1], tri[2], tri[3], tri[4], tri[5]);
     addPrim(ot[db], poly);
     nextpri += sizeof(POLY_G3);
+    return poly;
 }
 
 void draw_quad_flat(ColorVertex v[]) {
@@ -186,7 +187,7 @@ void draw_quad_flat(ColorVertex v[]) {
     nextpri += sizeof(POLY_F4);
 }
 
-void draw_quad_gouraud(ColorVertex v[]) {
+POLY_G4* draw_quad_gouraud(ColorVertex v[]) {
     POLY_G4 *poly = (POLY_G4*)nextpri;
     setPolyG4(poly);
     setRGB0(poly, v->r, v->g, v->b);
@@ -196,6 +197,7 @@ void draw_quad_gouraud(ColorVertex v[]) {
     setXY4(poly, v->x, v->y, v[1].x, v[1].y, v[2].x, v[2].y, v[3].x, v[3].y);
     addPrim(ot[db], poly);
     nextpri += sizeof(POLY_G4);
+    return poly;
 }
 
 void draw_line_flat(ColorVertex v[]) {
