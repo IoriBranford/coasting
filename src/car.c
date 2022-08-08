@@ -89,25 +89,20 @@ void draw_car() {
     int screeny = car.y;
     int f_cos = ccos(car.f_angle);
     int f_sin = csin(car.f_angle);
-	short triangle[] = {
-        0, 0,
-        0, -16,
-        16, -8
+    ColorVertex v[3] = {
+        {.x = 0, .y = 0,   .r = 0xe4, .g =  0x3, .b = 0x95},
+        {.x = 0, .y = -16, .r = 0xe4, .g =  0x3, .b = 0x95},
+        {.x = 16, .y = -8, .r = 0xe5, .g = 0x9b, .b = 0x30},
     };
-    for (int i = 0; i < 6; i += 2) {
-        int tx = triangle[i];
-        int ty = triangle[i+1];
-        triangle[i]   = (tx * f_cos - ty * f_sin) / ONE + screenx;
-        triangle[i+1] = (tx * f_sin + ty * f_cos) / ONE + screeny;
+
+    for (int i = 0; i < 3; ++i) {
+        int vx = v[i].x;
+        int vy = v[i].y;
+        v[i].x = (vx * f_cos - vy * f_sin) / ONE + screenx;
+        v[i].y = (vx * f_sin + vy * f_cos) / ONE + screeny;
     }
 
-	u_char colors[] = {
-		255, 0, 0,
-		0, 255, 0,
-		0, 0, 255,
-        0, 0, 0 // pad
-	};
-    draw_triangle_gouraud(triangle, colors);
+    draw_triangle_gouraud(v);
 }
 
 ColorVertex fuelgauge[] = {

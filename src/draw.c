@@ -166,13 +166,13 @@ void draw_triangle_flat(short tri[]) {
     nextpri += sizeof(POLY_F3);
 }
 
-POLY_G3* draw_triangle_gouraud(short tri[], u_char colors[]) {
+POLY_G3* draw_triangle_gouraud(ColorVertex *v) {
     POLY_G3 *poly = (POLY_G3*)nextpri;
     setPolyG3(poly);
-    setRGB0(poly, colors[0], colors[1], colors[2]);
-    setRGB1(poly, colors[3], colors[4], colors[5]);
-    setRGB2(poly, colors[6], colors[7], colors[8]);
-    setXY3(poly, tri[0], tri[1], tri[2], tri[3], tri[4], tri[5]);
+    setRGB0(poly, v[0].r, v[0].g, v[0].b);
+    setRGB1(poly, v[1].r, v[1].g, v[1].b);
+    setRGB2(poly, v[2].r, v[2].g, v[2].b);
+    setXY3(poly, v[0].x, v[0].y, v[1].x, v[1].y, v[2].x, v[2].y);
     addPrim(ot[db], poly);
     nextpri += sizeof(POLY_G3);
     return poly;
