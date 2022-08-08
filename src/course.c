@@ -98,4 +98,49 @@ void draw_course() {
         draw_line_gouraud(vertices);
         ++tr;
     }
+    draw_exit();
+}
+
+void draw_exit() {
+    #define RADIUS 12
+    #define ABOVETRACK 8
+
+    int x, y, f_angle;
+    course_transform_car(&x, &y, &f_angle, course->num_tracks-1, course->f_len);
+    f_angle -= ONE/4;
+    int f_cos = ccos(f_angle), f_sin = csin(f_angle);
+    x += f_cos*ABOVETRACK/ONE;
+    y += f_sin*ABOVETRACK/ONE;
+
+    int time = get_time();
+    ColorVertex vertices[] = {
+        {.x = x, .y = y},
+        {0},
+        {0},
+    };
+    int cn = sizeof(COLORCYCLE);
+    int ci = ((get_time() / 6) * 3) % cn;
+    vertices->r = COLORCYCLE[ci];
+    vertices->g = COLORCYCLE[ci+1];
+    vertices->b = COLORCYCLE[ci+2];
+    ci = (ci + 3) % cn;
+    vertices[1].r = vertices[2].r = COLORCYCLE[ci];
+    vertices[1].g = vertices[2].g = COLORCYCLE[ci+1];
+    vertices[1].b = vertices[2].b = COLORCYCLE[ci+2];
+
+    time = (time*ONE/60) % ONE;
+
+    for (int i = 0; i < 6; ++i) {
+        int f_a0 = f_angle + i*ONE/6 + time;
+        f_cos = ccos(f_a0);
+        f_sin = csin(f_a0);
+        vertices[1].x = x + f_cos*RADIUS/ONE;
+        vertices[1].y = y + f_sin*RADIUS/ONE;
+        int f_a1 = f_a0 + ONE/6;
+        f_cos = ccos(f_a1);
+        f_sin = csin(f_a1);
+        vertices[2].x = x + f_cos*RADIUS/ONE;
+        vertices[2].y = y + f_sin*RADIUS/ONE;
+        setSemiTrans(draw_triangle_gouraud(vertices), 1);
+    }
 }
