@@ -19,6 +19,7 @@ char *nextpri;          // Next primitive pointer
 u_char drawcolor[4];
 
 void draw_setup(int region, int w, int h) {
+    InitGeom();
     // Reset draw
     ResetGraph(region);
 
