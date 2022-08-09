@@ -37,9 +37,11 @@ int main() {
 		draw_hud();
 		set_draw_offset(0);
 
+		draw_exit_front();
 		draw_particles();
 		draw_car();
 		draw_course();
+		draw_exit_back();
 		set_draw_offset(camera);
 
 		draw_background(camera[0], camera[1]);

@@ -20,6 +20,7 @@ int is_course_end(int f_pos);
 void move_on_course(int *trackidx, int *f_position, int f_speed);
 void course_transform_car(int *x, int *y, int *f_angle, int tri, int f_pos);
 void draw_course();
-void draw_exit();
+void draw_exit_back();
+void draw_exit_front();
 
 #endif
