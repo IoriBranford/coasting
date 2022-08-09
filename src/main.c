@@ -22,12 +22,12 @@ int main() {
 	audio_setup();
 	input_setup();
 
-	select_course(0);
-	car_setup();
-	clear_particles();
+	start_next_course();
 
 	play_cdda(2, 1);
 	while (1) {
+		if (car_finished_course())
+			start_next_course();
 		update_car();
 		update_particles();
 

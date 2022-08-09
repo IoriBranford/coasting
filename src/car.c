@@ -78,6 +78,10 @@ void update_car() {
     course_transform_car(&car.x, &car.y, &car.f_angle, car.trackidx, car.f_coursepos);
 }
 
+int car_finished_course() {
+    return is_course_end(car.f_coursepos);
+}
+
 void car_set_camera(short *camerax, short *cameray) {
     int x = car.x, y = car.y;
     *camerax = 160-x;

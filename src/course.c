@@ -1,5 +1,7 @@
 #include "course.h"
 #include "courses.h"
+#include "car.h"
+#include "particle.h"
 
 #include "draw.h"
 #include "time.h"
@@ -12,10 +14,19 @@ u_char COLORCYCLE[] = {
     0, 255, 255,
 };
 
-Course *course;
+Course *course = 0;
+int courseidx;
 
-void select_course(int courseidx) {
-    course = COURSES+courseidx;
+void start_next_course() {
+    if (course){
+        if (courseidx + 1 < NUM_COURSES) {
+            ++course;
+            ++courseidx;
+        }
+    }else
+        course = COURSES;
+	car_setup();
+	clear_particles();
 }
 
 int is_course_end(int f_pos) {
