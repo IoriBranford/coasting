@@ -18,13 +18,14 @@ Course *course = 0;
 int courseidx;
 
 void start_next_course() {
-    if (course){
+    if (course) {
         if (courseidx + 1 < NUM_COURSES) {
             ++course;
             ++courseidx;
         }
-    }else
+    } else {
         course = COURSES;
+    }
 	car_setup();
 	clear_particles();
 }

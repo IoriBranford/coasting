@@ -15,7 +15,7 @@ typedef struct Course {
     Track *tracks;
 } Course;
 
-void select_course(int courseidx);
+void start_next_course();
 int is_course_end(int f_pos);
 void move_on_course(int *trackidx, int *f_position, int f_speed);
 void course_transform_car(int *x, int *y, int *f_angle, int tri, int f_pos);

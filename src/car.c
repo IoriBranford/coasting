@@ -13,6 +13,10 @@
 #define F_DRIVE_FORCE (ONE/15)
 #define F_GRAVITY     (ONE/30)
 #define MAX_SPEED (ONE*10)
+#define EXIT_STRETCH_MAX 256
+#define EXIT_STRETCH_AMT 64
+
+typedef void (*Func)();
 
 struct Car {
     int x, y;
@@ -22,11 +26,16 @@ struct Car {
     int f_speed;
     int f_accel;
     int fuel;
+    short exitstretch[2];
+    Func update;
 };
 
 typedef struct Car Car;
 
 Car car;
+
+void update_car_driving();
+void update_car_exiting();
 
 void car_setup() {
     car.x = car.y = 0;
@@ -36,9 +45,40 @@ void car_setup() {
     car.f_speed = 0;
     car.f_accel = 0;
     car.fuel = MAX_FUEL;
+    car.exitstretch[0] = car.exitstretch[1] = 0;
+    car.update = update_car_driving;
 }
 
 void update_car() {
+    if (car.update) {
+        car.update(car);
+    }
+}
+
+void start_car_exiting() {
+    car.update = update_car_exiting;
+    car.f_speed = ONE;
+}
+
+void car_add_track_particle() {
+    int f_partspeed = car.f_speed * (rand()%ONE) / ONE;
+    if (f_partspeed) {
+        int f_angle = car.f_angle - ONE/2 + (rand()%(ONE/6)) - ONE/12;
+        int f_cos = ccos(f_angle);
+        int f_sin = csin(f_angle);
+        int f_partvelx = f_cos * f_partspeed / ONE;
+        int f_partvely = f_sin * f_partspeed / ONE;
+        ColorVertex v = {
+            .x = car.x + car.exitstretch[1]*f_cos/ONE,
+            .y = car.y + car.exitstretch[1]*f_sin/ONE,
+            .r = 0, .g = 255, .b = 255
+        };
+        u_int time = abs(f_partspeed)*10/ONE;
+        add_particle(&v, f_partvelx, f_partvely, time);
+    }
+}
+
+void update_car_driving() {
     Controller *controller = get_controller(0);
     if (car.fuel > 0 && is_button_pressed(controller, BUTTON_RIGHT)) {
         car.f_accel = F_DRIVE_FORCE;
@@ -53,8 +93,7 @@ void update_car() {
     car.f_speed += car.f_accel;
     int f_gravity = (csin(car.f_angle)) * F_GRAVITY / ONE;
     car.f_speed += f_gravity;
-    if ((car.f_speed < 0 && car.f_coursepos <= 0)
-    || (car.f_speed > 0 && is_course_end(car.f_coursepos))) {
+    if (car.f_speed < 0 && car.f_coursepos <= 0) {
         car.f_speed = 0;
     }
     if (car.f_speed > MAX_SPEED)
@@ -62,24 +101,27 @@ void update_car() {
     else if (car.f_speed < -MAX_SPEED)
         car.f_speed = -MAX_SPEED;
 
-    int f_partspeed = car.f_speed * (rand()%ONE) / ONE;
-    if (f_partspeed) {
-        int f_angle = car.f_angle - ONE/2 + (rand()%(ONE/6)) - ONE/12;
-        int f_partvelx = ccos(f_angle) * f_partspeed / ONE;
-        int f_partvely = csin(f_angle) * f_partspeed / ONE;
-        ColorVertex v = {
-            .x = car.x + f_partspeed/ONE, .y = car.y + f_partspeed/ONE, .r = 0, .g = 255, .b = 255
-        };
-        u_int time = abs(f_partspeed)*10/ONE;
-        add_particle(&v, f_partvelx, f_partvely, time);
-    }
+    car_add_track_particle();
 
     move_on_course(&car.trackidx, &car.f_coursepos, car.f_speed);
     course_transform_car(&car.x, &car.y, &car.f_angle, car.trackidx, car.f_coursepos);
+    if (is_course_end(car.f_coursepos))
+        start_car_exiting();
 }
 
-int car_finished_course() {
-    return is_course_end(car.f_coursepos);
+void update_car_exiting() {
+    if (car.exitstretch[0] < EXIT_STRETCH_MAX) {
+        car.exitstretch[0] += EXIT_STRETCH_AMT;
+        car_add_track_particle();
+    } else if (car.exitstretch[1] < EXIT_STRETCH_MAX) {
+        car.exitstretch[1] += EXIT_STRETCH_AMT;
+        car_add_track_particle();
+    } else {
+        Controller *controller = get_controller(0);
+        if(is_button_pressed(controller, BUTTON_RIGHT)) {
+            start_next_course();
+        }
+    }
 }
 
 void car_set_camera(short *camerax, short *cameray) {
@@ -98,7 +140,9 @@ void draw_car() {
         {.x = 0, .y = -16, .r = 0xe4, .g =  0x3, .b = 0x95},
         {.x = 16, .y = -8, .r = 0xe5, .g = 0x9b, .b = 0x30},
     };
-
+    v[2].x += car.exitstretch[0];
+    v[1].x += car.exitstretch[1];
+    v[0].x += car.exitstretch[1];
     for (int i = 0; i < 3; ++i) {
         int vx = v[i].x;
         int vy = v[i].y;

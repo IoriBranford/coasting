@@ -26,8 +26,6 @@ int main() {
 
 	play_cdda(2, 1);
 	while (1) {
-		if (car_finished_course())
-			start_next_course();
 		update_car();
 		update_particles();
 
