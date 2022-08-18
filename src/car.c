@@ -78,6 +78,25 @@ void car_add_track_particle() {
     }
 }
 
+void car_add_exit_particle() {
+    int f_partspeed = rand()%(ONE*8);
+    int f_angle = car.f_angle - ONE/2; // backward
+    f_angle = f_angle + (rand()%(ONE/128)) - ONE/256;
+    int f_cos = ccos(f_angle);
+    int f_sin = csin(f_angle);
+    int f_partvelx = f_cos * f_partspeed / ONE;
+    int f_partvely = f_sin * f_partspeed / ONE;
+    int offsetx = car.exitstretch[1];
+    int offsety = -8;
+    ColorVertex v = {
+        .x = car.x - (offsetx*f_cos - offsety*f_sin) / ONE,
+        .y = car.y - (offsetx*f_sin + offsety*f_cos) / ONE,
+        .r = 0, .g = 255, .b = 255
+    };
+    u_int time = abs(f_partspeed)*10/ONE;
+    add_particle(&v, f_partvelx, f_partvely, time);
+}
+
 void update_car_driving() {
     Controller *controller = get_controller(0);
     if (car.fuel > 0 && is_button_pressed(controller, BUTTON_RIGHT)) {
@@ -112,10 +131,10 @@ void update_car_driving() {
 void update_car_exiting() {
     if (car.exitstretch[0] < EXIT_STRETCH_MAX) {
         car.exitstretch[0] += EXIT_STRETCH_AMT;
-        car_add_track_particle();
+        car_add_exit_particle();
     } else if (car.exitstretch[1] < EXIT_STRETCH_MAX) {
         car.exitstretch[1] += EXIT_STRETCH_AMT;
-        car_add_track_particle();
+        car_add_exit_particle();
     } else {
         Controller *controller = get_controller(0);
         if(is_button_pressed(controller, BUTTON_RIGHT)) {
