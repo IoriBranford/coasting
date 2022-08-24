@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="3">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="51">
  <editorsettings>
   <export target="../src/courses.c" format="custom"/>
  </editorsettings>
  <objectgroup id="2" name="intro" class="Course">
-  <object id="1" name="tracks" x="0" y="0">
-   <polyline points="0,0 64,0 80,8 96,24 160,232 176,248 192,256 256,256"/>
-  </object>
   <object id="3" name="text" x="16" y="16" width="288" height="16">
    <text fontfamily="Noto Mono" pixelsize="8" wrap="1" color="#ffffff">PRESS X FOR GAS</text>
   </object>
- </objectgroup>
- <objectgroup id="3" name="uphill">
-  <object id="2" name="tracks" x="0" y="0">
-   <polyline points="0,0 64,0 80,-8 96,-24 112,-48 128,-64 144,-72 256,-72"/>
+  <object id="3" template="tracks/4_0.tx" class="Track" x="0" y="0"/>
+  <object id="4" template="tracks/4_2_bump.tx" x="64" y="0"/>
+  <object id="5" x="128" y="32">
+   <polyline points="0,0 256,256"/>
   </object>
-  <object id="4" name="text" x="16" y="16" width="288" height="16">
-   <text fontfamily="Noto Mono" pixelsize="8" wrap="1" color="#ffffff">PRESS X FOR GAS</text>
-  </object>
+  <object id="10" template="tracks/4_2_dip.tx" x="384" y="288"/>
+  <object id="24" template="tracks/3_3_loop.tx" x="448" y="320"/>
+  <object id="44" template="tracks/2_0.tx" x="432" y="320"/>
+  <object id="39" template="tracks/4_4_loop.tx" x="464" y="320"/>
+  <object id="45" template="tracks/2_0.tx" x="448" y="320"/>
+  <object id="40" template="tracks/5_5_loop.tx" x="480" y="320"/>
+  <object id="46" template="tracks/2_0.tx" x="464" y="320"/>
+  <object id="41" template="tracks/6_6_loop.tx" x="496" y="320"/>
+  <object id="47" template="tracks/2_0.tx" x="480" y="320"/>
+  <object id="42" template="tracks/7_7_loop.tx" x="512" y="320"/>
+  <object id="48" template="tracks/2_0.tx" x="496" y="320"/>
+  <object id="43" template="tracks/8_8_loop.tx" x="528" y="320"/>
+  <object id="49" template="tracks/4_-2_dip.tx" x="512" y="320"/>
+  <object id="50" template="tracks/4_-4.tx" x="576" y="288"/>
  </objectgroup>
 </map>
