@@ -32,6 +32,7 @@ int main() {
 		car_set_camera(camera, camera+1);
 		draw_begin();
 
+		draw_course_message();
 		draw_hud();
 		set_draw_offset(0);
 
@@ -44,7 +45,6 @@ int main() {
 
 		draw_background(camera[0], camera[1]);
 
-        FntFlush(-1);
 		draw_end();
 
 		time_tick();

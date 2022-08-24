@@ -89,6 +89,14 @@ void course_transform_car(int *x, int *y, int *f_angle, int tri, int f_pos) {
     *f_angle = tr->f_angle;
 }
 
+int fntstream = -1;
+void draw_course_message() {
+    if (fntstream < 0)
+        fntstream = FntOpen(8, 8, 304, 224, 0, 128);
+    FntPrint(fntstream, course->message);
+    FntFlush(fntstream);
+}
+
 void draw_course() {
     int cn = sizeof(COLORCYCLE);
     int ci = ((get_time() / 6) * 3) % cn;
