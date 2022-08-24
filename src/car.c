@@ -12,7 +12,7 @@
 #define DRIVE_FUEL_COST 3
 #define F_DRIVE_FORCE (ONE/15)
 #define F_GRAVITY     (ONE/30)
-#define MAX_SPEED (ONE*10)
+#define MAX_SPEED (0x70000000)
 #define EXIT_STRETCH_MAX 256
 #define EXIT_STRETCH_AMT 64
 
