@@ -14,6 +14,7 @@ let findCourses = (/** @type TileMap */map) => {
         let y = 0;
         let tracks = [];
         let fCourseLength = 0;
+        let message = "";
         layer.objects.forEach(object => {
             if (object.shape == MapObject.Polyline) {
                 let ox = Math.floor(object.x);
@@ -34,13 +35,16 @@ let findCourses = (/** @type TileMap */map) => {
                         fCourseLength += fTrackLength;
                     }
                 })
+            } else if (object.shape == MapObject.Text) {
+                message = object.text;
             }
         })
 
         if (fCourseLength > 0) {
             let course = {
                 f_len: fCourseLength,
-                tracks: tracks
+                tracks: tracks,
+                message: message,
             };
             let courseName = layer.name.replace(/[^_A-Za-z0-9]/gi, '');
             if (courseName.length > 0) {
@@ -93,7 +97,9 @@ let buildCourseCode = (courses, fileName) => {
     sourcelines.push(`Course ${MAPNAME}[] = {`);
     courses.forEach((course) => {
         sourcelines.push("{")
-        sourcelines.push(`.name = "${course.name}", .f_len = ${course.f_len},`)
+        sourcelines.push(`.name = "${course.name}",`)
+        sourcelines.push(`.message = "${course.message}",`)
+        sourcelines.push(`.f_len = ${course.f_len},`)
         sourcelines.push(`.num_tracks = ${course.tracks.length},`)
         sourcelines.push(`.tracks = TRACKS_${course.name}`)
         sourcelines.push("},")

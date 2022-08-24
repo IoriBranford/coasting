@@ -10,6 +10,7 @@ typedef struct Track {
 
 typedef struct Course {
     char *name;
+    char *message;
     int f_len;
     int num_tracks;
     Track *tracks;

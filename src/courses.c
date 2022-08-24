@@ -89,12 +89,16 @@ static Track TRACKS_uphill[] = {
 };
 Course COURSES[] = {
 {
-.name = "intro", .f_len = 1747577,
+.name = "intro",
+.message = "PRESS X FOR GAS",
+.f_len = 1747577,
 .num_tracks = 7,
 .tracks = TRACKS_intro
 },
 {
-.name = "uphill", .f_len = 1170946,
+.name = "uphill",
+.message = "PRESS X FOR GAS",
+.f_len = 1170946,
 .num_tracks = 7,
 .tracks = TRACKS_uphill
 },

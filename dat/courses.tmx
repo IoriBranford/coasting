@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="3">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="3">
  <editorsettings>
   <export target="../src/courses.c" format="custom"/>
  </editorsettings>
@@ -7,10 +7,16 @@
   <object id="1" name="tracks" x="0" y="0">
    <polyline points="0,0 64,0 80,8 96,24 160,232 176,248 192,256 256,256"/>
   </object>
+  <object id="3" name="text" x="16" y="16" width="288" height="16">
+   <text fontfamily="Noto Mono" pixelsize="8" wrap="1" color="#ffffff">PRESS X FOR GAS</text>
+  </object>
  </objectgroup>
  <objectgroup id="3" name="uphill">
   <object id="2" name="tracks" x="0" y="0">
    <polyline points="0,0 64,0 80,-8 96,-24 112,-48 128,-64 144,-72 256,-72"/>
+  </object>
+  <object id="4" name="text" x="16" y="16" width="288" height="16">
+   <text fontfamily="Noto Mono" pixelsize="8" wrap="1" color="#ffffff">PRESS X FOR GAS</text>
   </object>
  </objectgroup>
 </map>
