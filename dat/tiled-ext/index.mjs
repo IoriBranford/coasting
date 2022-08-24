@@ -7,32 +7,35 @@ let findCourses = (/** @type TileMap */map) => {
     let courses = [];
     for (var i = 0; i < map.layerCount; ++i) {
         /**@type ObjectGroup */ var layer = map.layerAt(i);
-        if (!layer.isObjectLayer && layer.class == "Course")
-            continue;
-        let trackObject = layer.objects.find(o => o.shape == MapObject.Polyline && o.name == "tracks");
-        if (!trackObject)
+        if (!layer.isObjectLayer)
             continue;
 
-        let x = Math.floor(trackObject.x);
-        let y = Math.floor(trackObject.y);
+        let x = 0;
+        let y = 0;
         let tracks = [];
         let fCourseLength = 0;
-        trackObject.polygon.forEach(point => {
-            let dx = Math.floor(point.x) - x;
-            let dy = Math.floor(point.y) - y;
-            if (dx != 0 || dy != 0) {
-                let fTrackLength = toFixed(Math.hypot(dx, dy));
-                tracks.push({
-                    dx: dx, dy: dy,
-                    x0: x, y0: y,
-                    f_start: fCourseLength,
-                    f_len: fTrackLength,
+        layer.objects.forEach(object => {
+            if (object.shape == MapObject.Polyline) {
+                let ox = Math.floor(object.x);
+                let oy = Math.floor(object.y);
+                object.polygon.forEach(point => {
+                    let dx = Math.floor(point.x) + ox - x;
+                    let dy = Math.floor(point.y) + oy - y;
+                    if (dx != 0 || dy != 0) {
+                        let fTrackLength = toFixed(Math.hypot(dx, dy));
+                        tracks.push({
+                            dx: dx, dy: dy,
+                            x0: x, y0: y,
+                            f_start: fCourseLength,
+                            f_len: fTrackLength,
+                        })
+                        x += dx;
+                        y += dy;
+                        fCourseLength += fTrackLength;
+                    }
                 })
-                x += dx;
-                y += dy;
-                fCourseLength += fTrackLength;
             }
-        });
+        })
 
         if (fCourseLength > 0) {
             let course = {
