@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object>
+  <polyline points="0,0 24,-24 48,-32 64,-32"/>
+ </object>
+</template>

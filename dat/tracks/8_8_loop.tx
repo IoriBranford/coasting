@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="8_8_loop">
+  <polyline points="0,0 24,-8 48,-32 56,-56 56,-72 48,-96 24,-120 0,-128 -16,-128 -40,-120 -64,-96 -72,-72 -72,-56 -64,-32 -40,-8 -16,0"/>
+ </object>
+</template>
